@@ -8,6 +8,7 @@
 // https://api.nasa.gov/planetary/apod/?api_key=MYKEY&start_date=2005-06-16&end_date=2005-07-23
 import Foundation
 
+
 class NPClient {
     
     static var photoInfo: [NASAPhoto]!
@@ -33,6 +34,7 @@ class NPClient {
             return URL(string: stringValue)!
         }
     }
+    
     
     class func requestPhotosList(startDate: String, endDate: String, completion: @escaping (Bool, Error?) -> Void) {
         
@@ -65,10 +67,18 @@ class NPClient {
         task.resume()
     }
     
-    class func downloadPhotos() {
-        
-    }
+    class func downloadPhotoInfo(completion: @escaping (Bool, Error?, [String]?) -> Void)  {
+        for photo in photoInfo {
+            let photoFields: [String] = [photo.date, photo.explanation, photo.title, photo.url]
+            completion(true, nil, photoFields)
+                
+                }
+            }
+            
+        }
+    
            
 
-}
+
+
 

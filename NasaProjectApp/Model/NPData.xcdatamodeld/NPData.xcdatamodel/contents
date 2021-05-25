@@ -4,7 +4,7 @@
         <attribute name="blurb" optional="YES" attributeType="String"/>
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="dateLabel" optional="YES" attributeType="String"/>
-        <attribute name="pic" optional="YES" attributeType="Binary"/>
+        <attribute name="pic" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="urlString" optional="YES" attributeType="String"/>
         <uniquenessConstraints>

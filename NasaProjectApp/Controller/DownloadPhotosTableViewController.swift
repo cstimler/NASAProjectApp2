@@ -6,16 +6,58 @@
 //
 
 import UIKit
+import QuickLookThumbnailing
 
 class DownloadPhotosTableViewController: UITableViewController {
     
     var dateToStart: String!
     var dateToEnd: String!
+    var reuseIdentifier: String = "PhotoCell"
     
     var dataController:DataController!
+    
+    var thumbnailArray: [QLThumbnailRepresentation]!
+    
+    // https://developer.apple.com/documentation/quicklookthumbnailing/creating_quick_look_thumbnails_to_preview_files_in_your_app
+    func generateThumbnailRepresentations(url: URL) {
+        
+        // Set up the parameters of the request.
+        
+        let size: CGSize = CGSize(width: 60, height: 90)
+        let scale = UIScreen.main.scale
+        
+        // Create the thumbnail request.
+        let request = QLThumbnailGenerator.Request(fileAt: url,
+                                                   size: size,
+                                                   scale: scale,
+                                                   representationTypes: .all)
+        
+        // Retrieve the singleton instance of the thumbnail generator and generate the thumbnails.
+        let generator = QLThumbnailGenerator.shared
+        generator.generateRepresentations(for: request) { (thumbnail, type, error) in
+        //    DispatchQueue.main.async {
+                if thumbnail == nil || error != nil {
+                    print("Unable to create thumbnail")
+                } else {
+                    if let thumbnail = thumbnail {
+                        self.thumbnailArray.append(thumbnail)
+                    }
+                }
+          //  }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error) in
+            if success {
+                NPClient.downloadPhotoInfo { (success, error, infoArray) in
+                    if success {
+                        
+                    }
+                }
+            }
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -28,23 +70,21 @@ class DownloadPhotosTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return thumbnailArray.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

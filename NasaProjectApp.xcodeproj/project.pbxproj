@@ -22,6 +22,7 @@
 		9F937AEA265CB637007B5054 /* PhotoStagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AE9265CB637007B5054 /* PhotoStagingViewController.swift */; };
 		9F937AEF265CEE3E007B5054 /* NPData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AED265CEE3E007B5054 /* NPData.xcdatamodeld */; };
 		9F937AF2265CF9F1007B5054 /* Photo + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AF1265CF9F1007B5054 /* Photo + Extension.swift */; };
+		9F937AF5265D11EC007B5054 /* CustomErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AF4265D11EC007B5054 /* CustomErrors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		9F937AE9265CB637007B5054 /* PhotoStagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStagingViewController.swift; sourceTree = "<group>"; };
 		9F937AEE265CEE3E007B5054 /* NPData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NPData.xcdatamodel; sourceTree = "<group>"; };
 		9F937AF1265CF9F1007B5054 /* Photo + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo + Extension.swift"; sourceTree = "<group>"; };
+		9F937AF4265D11EC007B5054 /* CustomErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomErrors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 		9F937ABC265CAEC2007B5054 /* NasaProjectApp */ = {
 			isa = PBXGroup;
 			children = (
+				9F937AF7265D1DD4007B5054 /* Helpers */,
 				9F937AD5265CAF37007B5054 /* Controller */,
 				9F937AD4265CAF2D007B5054 /* NP Responses */,
 				9F937AD3265CAF1D007B5054 /* NP Client */,
@@ -95,6 +98,7 @@
 				9F937AD6265CAF40007B5054 /* Managed Object Extensions */,
 				9F937AD7265CAFAA007B5054 /* DataController.swift */,
 				9F937AED265CEE3E007B5054 /* NPData.xcdatamodeld */,
+				9F937AF4265D11EC007B5054 /* CustomErrors.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -132,6 +136,13 @@
 				9F937AF1265CF9F1007B5054 /* Photo + Extension.swift */,
 			);
 			path = "Managed Object Extensions";
+			sourceTree = "<group>";
+		};
+		9F937AF7265D1DD4007B5054 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,6 +219,7 @@
 				9F937AC2265CAEC2007B5054 /* ViewController.swift in Sources */,
 				9F937AD8265CAFAA007B5054 /* DataController.swift in Sources */,
 				9F937AEA265CB637007B5054 /* PhotoStagingViewController.swift in Sources */,
+				9F937AF5265D11EC007B5054 /* CustomErrors.swift in Sources */,
 				9F937AEF265CEE3E007B5054 /* NPData.xcdatamodeld in Sources */,
 				9F937ADB265CAFE8007B5054 /* NPClient.swift in Sources */,
 				9F937AE7265CB608007B5054 /* DownloadPhotosTableViewController.swift in Sources */,
