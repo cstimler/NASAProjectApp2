@@ -13,6 +13,15 @@
 		9F937AC5265CAEC2007B5054 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F937AC3265CAEC2007B5054 /* Main.storyboard */; };
 		9F937AC7265CAEC4007B5054 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F937AC6265CAEC4007B5054 /* Assets.xcassets */; };
 		9F937ACA265CAEC4007B5054 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F937AC8265CAEC4007B5054 /* LaunchScreen.storyboard */; };
+		9F937AD8265CAFAA007B5054 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AD7265CAFAA007B5054 /* DataController.swift */; };
+		9F937ADB265CAFE8007B5054 /* NPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937ADA265CAFE8007B5054 /* NPClient.swift */; };
+		9F937ADE265CB1A3007B5054 /* NASAPhotosSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937ADD265CB1A3007B5054 /* NASAPhotosSearchResponse.swift */; };
+		9F937AE1265CB5B2007B5054 /* GreetingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AE0265CB5B2007B5054 /* GreetingsViewController.swift */; };
+		9F937AE4265CB5C6007B5054 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AE3265CB5C6007B5054 /* SettingsViewController.swift */; };
+		9F937AE7265CB608007B5054 /* DownloadPhotosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AE6265CB608007B5054 /* DownloadPhotosTableViewController.swift */; };
+		9F937AEA265CB637007B5054 /* PhotoStagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AE9265CB637007B5054 /* PhotoStagingViewController.swift */; };
+		9F937AEF265CEE3E007B5054 /* NPData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AED265CEE3E007B5054 /* NPData.xcdatamodeld */; };
+		9F937AF2265CF9F1007B5054 /* Photo + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AF1265CF9F1007B5054 /* Photo + Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +33,15 @@
 		9F937AC6265CAEC4007B5054 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F937AC9265CAEC4007B5054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F937ACB265CAEC4007B5054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9F937AD7265CAFAA007B5054 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		9F937ADA265CAFE8007B5054 /* NPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPClient.swift; sourceTree = "<group>"; };
+		9F937ADD265CB1A3007B5054 /* NASAPhotosSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASAPhotosSearchResponse.swift; sourceTree = "<group>"; };
+		9F937AE0265CB5B2007B5054 /* GreetingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewController.swift; sourceTree = "<group>"; };
+		9F937AE3265CB5C6007B5054 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9F937AE6265CB608007B5054 /* DownloadPhotosTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadPhotosTableViewController.swift; sourceTree = "<group>"; };
+		9F937AE9265CB637007B5054 /* PhotoStagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStagingViewController.swift; sourceTree = "<group>"; };
+		9F937AEE265CEE3E007B5054 /* NPData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NPData.xcdatamodel; sourceTree = "<group>"; };
+		9F937AF1265CF9F1007B5054 /* Photo + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo + Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +74,10 @@
 		9F937ABC265CAEC2007B5054 /* NasaProjectApp */ = {
 			isa = PBXGroup;
 			children = (
+				9F937AD5265CAF37007B5054 /* Controller */,
+				9F937AD4265CAF2D007B5054 /* NP Responses */,
+				9F937AD3265CAF1D007B5054 /* NP Client */,
+				9F937AD2265CAEF3007B5054 /* Model */,
 				9F937ABD265CAEC2007B5054 /* AppDelegate.swift */,
 				9F937ABF265CAEC2007B5054 /* SceneDelegate.swift */,
 				9F937AC1265CAEC2007B5054 /* ViewController.swift */,
@@ -65,6 +87,51 @@
 				9F937ACB265CAEC4007B5054 /* Info.plist */,
 			);
 			path = NasaProjectApp;
+			sourceTree = "<group>";
+		};
+		9F937AD2265CAEF3007B5054 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9F937AD6265CAF40007B5054 /* Managed Object Extensions */,
+				9F937AD7265CAFAA007B5054 /* DataController.swift */,
+				9F937AED265CEE3E007B5054 /* NPData.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9F937AD3265CAF1D007B5054 /* NP Client */ = {
+			isa = PBXGroup;
+			children = (
+				9F937ADA265CAFE8007B5054 /* NPClient.swift */,
+			);
+			path = "NP Client";
+			sourceTree = "<group>";
+		};
+		9F937AD4265CAF2D007B5054 /* NP Responses */ = {
+			isa = PBXGroup;
+			children = (
+				9F937ADD265CB1A3007B5054 /* NASAPhotosSearchResponse.swift */,
+			);
+			path = "NP Responses";
+			sourceTree = "<group>";
+		};
+		9F937AD5265CAF37007B5054 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				9F937AE0265CB5B2007B5054 /* GreetingsViewController.swift */,
+				9F937AE3265CB5C6007B5054 /* SettingsViewController.swift */,
+				9F937AE6265CB608007B5054 /* DownloadPhotosTableViewController.swift */,
+				9F937AE9265CB637007B5054 /* PhotoStagingViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		9F937AD6265CAF40007B5054 /* Managed Object Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9F937AF1265CF9F1007B5054 /* Photo + Extension.swift */,
+			);
+			path = "Managed Object Extensions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,9 +204,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F937AF2265CF9F1007B5054 /* Photo + Extension.swift in Sources */,
 				9F937AC2265CAEC2007B5054 /* ViewController.swift in Sources */,
+				9F937AD8265CAFAA007B5054 /* DataController.swift in Sources */,
+				9F937AEA265CB637007B5054 /* PhotoStagingViewController.swift in Sources */,
+				9F937AEF265CEE3E007B5054 /* NPData.xcdatamodeld in Sources */,
+				9F937ADB265CAFE8007B5054 /* NPClient.swift in Sources */,
+				9F937AE7265CB608007B5054 /* DownloadPhotosTableViewController.swift in Sources */,
+				9F937AE1265CB5B2007B5054 /* GreetingsViewController.swift in Sources */,
 				9F937ABE265CAEC2007B5054 /* AppDelegate.swift in Sources */,
+				9F937ADE265CB1A3007B5054 /* NASAPhotosSearchResponse.swift in Sources */,
 				9F937AC0265CAEC2007B5054 /* SceneDelegate.swift in Sources */,
+				9F937AE4265CB5C6007B5054 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +417,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9F937AED265CEE3E007B5054 /* NPData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9F937AEE265CEE3E007B5054 /* NPData.xcdatamodel */,
+			);
+			currentVersion = 9F937AEE265CEE3E007B5054 /* NPData.xcdatamodel */;
+			path = NPData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9F937AB2265CAEC2007B5054 /* Project object */;
 }
