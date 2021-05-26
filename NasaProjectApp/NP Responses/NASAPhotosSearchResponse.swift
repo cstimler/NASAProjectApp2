@@ -12,6 +12,13 @@ struct NASAPhoto: Codable {
     var explanation: String
     var title: String
     var url: String
-}
+    
+    enum CodingKeys: String, CodingKey {
+        case date
+        case explanation
+        case title
+        case url
+        }
+    }
 
 

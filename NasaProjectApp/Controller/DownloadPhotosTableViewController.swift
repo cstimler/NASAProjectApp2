@@ -8,6 +8,14 @@
 import UIKit
 import QuickLookThumbnailing
 
+class PhotoTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var photoImageView: UIImageView!
+    
+    @IBOutlet weak var photoTextView: UITextView!
+    
+}
+
 class DownloadPhotosTableViewController: UITableViewController {
     
     var dateToStart: String!
@@ -16,11 +24,14 @@ class DownloadPhotosTableViewController: UITableViewController {
     
     var dataController:DataController!
     
-    var thumbnailArray: [QLThumbnailRepresentation]!
+    var photoInfo: [NASAPhoto] = []
+    var thumbnailArray = [QLThumbnailRepresentation]()
+    var photoInfoArray = [[String]]()
+    var tempPhoto = [Int:UIImage]()
     
     // https://developer.apple.com/documentation/quicklookthumbnailing/creating_quick_look_thumbnails_to_preview_files_in_your_app
-    func generateThumbnailRepresentations(url: URL) {
-        
+    func generateThumbnailRepresentations(url: URL) -> UIImage {
+        var thisThumbnail = QLThumbnailRepresentation()
         // Set up the parameters of the request.
         
         let size: CGSize = CGSize(width: 60, height: 90)
@@ -30,7 +41,7 @@ class DownloadPhotosTableViewController: UITableViewController {
         let request = QLThumbnailGenerator.Request(fileAt: url,
                                                    size: size,
                                                    scale: scale,
-                                                   representationTypes: .all)
+                                                   representationTypes: .thumbnail)
         
         // Retrieve the singleton instance of the thumbnail generator and generate the thumbnails.
         let generator = QLThumbnailGenerator.shared
@@ -38,33 +49,53 @@ class DownloadPhotosTableViewController: UITableViewController {
         //    DispatchQueue.main.async {
                 if thumbnail == nil || error != nil {
                     print("Unable to create thumbnail")
+                    print(error)
                 } else {
                     if let thumbnail = thumbnail {
-                        self.thumbnailArray.append(thumbnail)
+                    thisThumbnail = thumbnail
+                   /* if let thumbnail = thumbnail {
+                        self.thumbnailArray.append(thumbnail) */
+                    
                     }
                 }
           //  }
+        
         }
+        return thisThumbnail.uiImage
     }
+    
+    func parsePhotoInfo()  {
+        var photoInfoArrayTemp = [[String]]()
+        for photo in photoInfo {
+            let photoFields: [String] = [photo.date, photo.explanation, photo.title, photo.url]
+            photoInfoArrayTemp.append(photoFields)
+                }
+            photoInfoArray = photoInfoArrayTemp
+        print("Finished parsing photos")
+        print(photoInfoArray.count)
+            }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error) in
+        print("Date to start is:" + dateToStart)
+        print("Date to eend is:" + dateToEnd)
+        NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error, nasaPhotos) in
             if success {
-                NPClient.downloadPhotoInfo { (success, error, infoArray) in
-                    if success {
-                        
+                print("Had success in vc!")
+                self.photoInfo = nasaPhotos
+                self.parsePhotoInfo()
+                self.tableView.reloadData()
                     }
                 }
             }
-        }
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
+    
 
     // MARK: - Table view data source
 
@@ -75,16 +106,52 @@ class DownloadPhotosTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return thumbnailArray.count
+        return photoInfoArray.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PhotoTableViewCell
+        // setup placeholder image:
+        cell.photoImageView.image = UIImage(named: "VirtualTourist_76")
+        // assign the title to the text:
+        if photoInfoArray != [] {
+        cell.photoTextView.text = photoInfoArray[indexPath.item][2]
+            NPClient.downloadPhotos(urlString: self.photoInfoArray[indexPath.item][3]) { (success, error, data) in
+                if success {
+                    print("has success in tableview too!!!!!")
+                    if self.tempPhoto[indexPath.item] == nil {
+                        if let data = data {
+                            let resizedImage = UIImage(data:data)?.imageResized()
+                        cell.photoImageView.image = resizedImage
+                        self.tempPhoto[indexPath.item] = resizedImage
+                    }
+                    }
+                    else {
+                        print("GOT INTO ELSEEEEE@!")
+                        cell.photoImageView.image = self.tempPhoto[indexPath.item]
+                    }
+                } else {
+                    print(error)
+                }
+            }
+        }
+        // replace placeholder image only if and when a thumbnail is available:
+        /*
+        let place = indexPath.item
+        if place < thumbnailArray.count
+        {
+            cell.imageView?.image = thumbnailArray[place].uiImage
+        }
+         
+          let thisUrl = URL(string: photoInfoArray[indexPath.item][3])
+            if let thisUrl = thisUrl {
+            cell.imageView?.image = generateThumbnailRepresentations(url: thisUrl)
+        } // close check on photoInfoArray */
+        
         return cell
     }
-    
+}
 
     /*
     // Override to support conditional editing of the table view.
@@ -130,5 +197,11 @@ class DownloadPhotosTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+// https://stackoverflow.com/questions/31314412/how-to-resize-image-in-swift
+extension UIImage {
+    func imageResized() -> UIImage {
+        return UIGraphicsImageRenderer(size: CGSize(width: 96, height: 80)).image { _ in
+            draw(in: CGRect(origin: .zero, size: CGSize(width: 96, height: 80)))
+        }
+    }
 }

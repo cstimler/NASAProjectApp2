@@ -10,32 +10,31 @@ import UIKit
 class SettingsViewController: UIViewController {
     
     
-    var dateToStart: String = ""
-    var dateToEnd: String = ""
+    var dateToStart: String = "2000-01-01"
+    var dateToEnd: String = "2000-01-07"
     
     var dataController:DataController!
+    var myCalendar = Calendar(identifier: .gregorian)
     
     @IBOutlet weak var datePicker: UIDatePicker!
     
     @IBAction func readyButtonPressed(_ sender: Any) {
         
      //   let usLocale = Locale(identifier: "en_US")
-        let date = datePicker.date
-        dateToStart = dateFormatter(date: date, dateFormat: "yyyy-MM-dd")
+        
         print(dateToStart)
-        let myCalendar = Calendar(identifier: .gregorian)
-        //https://www.globalnerdy.com/2020/05/28/how-to-work-with-dates-and-times-in-swift-5-part-3-date-arithmetic/
-       let dateFinal = myCalendar.date(byAdding: .day, value: 7, to: date)
-        dateToEnd = dateFormatter(date: dateFinal!, dateFormat: "yyyy-MM-dd")
         print(dateToEnd)
-       
     }
+    
     // https://stackoverflow.com/questions/35700281/date-format-in-swift
     func dateFormatter(date: Date,dateFormat:String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
         return dateFormatter.string(from: date)
     }
+    
+    // https://stackoverflow.com/questions/3785610/uidatepicker-upon-date-changed
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,14 +46,29 @@ class SettingsViewController: UIViewController {
         // The first date for photos is June 16, 1995:
         datePicker.minimumDate = Date(timeIntervalSinceReferenceDate: -175000000)
         datePicker.maximumDate = Date()
+        // https://stackoverflow.com/questions/3785610/uidatepicker-upon-date-changed
+        datePicker.addTarget(self, action: #selector(datePickerChanged(datePicker:)), for: .valueChanged)
+    }
+    
+    // https://stackoverflow.com/questions/3785610/uidatepicker-upon-date-changed
+    @objc func datePickerChanged(datePicker: UIDatePicker) {
+        print(datePicker.date)
+        dateToStart = dateFormatter(date: datePicker.date, dateFormat: "yyyy-MM-dd")
+        let dateFinal = myCalendar.date(byAdding: .day, value: 7, to: datePicker.date)
+        if let dateFinal = dateFinal {
+        dateToEnd = dateFormatter(date: dateFinal, dateFormat: "yyyy-MM-dd")
+    }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! DownloadPhotosTableViewController
         
-        controller.dateToStart = dateToStart
-        controller.dateToEnd = dateToEnd
-        controller.dataController = dataController
+            print("Passing start:" + self.dateToStart)
+            print("Passing end:" + self.dateToEnd)
+            controller.dateToStart = self.dateToStart
+            controller.dateToEnd = self.dateToEnd
+            controller.dataController = self.dataController
+        
     }
     
 }
