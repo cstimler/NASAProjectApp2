@@ -89,6 +89,7 @@ class NPClient {
                 if error != nil {
                     print(error)
                 } else {
+                    print("is downloadind a new photo!")
                     DispatchQueue.main.async {
                     completion(true, nil, data)
                 }

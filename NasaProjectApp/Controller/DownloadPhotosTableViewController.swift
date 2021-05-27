@@ -28,6 +28,8 @@ class DownloadPhotosTableViewController: UITableViewController {
     var thumbnailArray = [QLThumbnailRepresentation]()
     var photoInfoArray = [[String]]()
     var tempPhoto = [Int:UIImage]()
+    var cache = NSCache<NSString, UIImage>()
+    
     
     // https://developer.apple.com/documentation/quicklookthumbnailing/creating_quick_look_thumbnails_to_preview_files_in_your_app
     func generateThumbnailRepresentations(url: URL) -> UIImage {
@@ -70,7 +72,7 @@ class DownloadPhotosTableViewController: UITableViewController {
             let photoFields: [String] = [photo.date, photo.explanation, photo.title, photo.url]
             photoInfoArrayTemp.append(photoFields)
                 }
-            photoInfoArray = photoInfoArrayTemp
+        photoInfoArray = photoInfoArray + photoInfoArrayTemp
         print("Finished parsing photos")
         print(photoInfoArray.count)
             }
@@ -117,40 +119,31 @@ class DownloadPhotosTableViewController: UITableViewController {
         // assign the title to the text:
         if photoInfoArray != [] {
         cell.photoTextView.text = photoInfoArray[indexPath.item][2]
-            NPClient.downloadPhotos(urlString: self.photoInfoArray[indexPath.item][3]) { (success, error, data) in
-                if success {
-                    print("has success in tableview too!!!!!")
-                    if self.tempPhoto[indexPath.item] == nil {
+                    if let cachedVersion = self.cache.object(forKey: self.photoInfoArray[indexPath.item][0] as NSString) {
+                        cell.photoImageView.image = cachedVersion
+                        print("was in first area")
+                    } else {
+                        NPClient.downloadPhotos(urlString: self.photoInfoArray[indexPath.item][3]) { (success, error, data) in
+                            if success {
                         if let data = data {
-                            let resizedImage = UIImage(data:data)?.imageResized()
-                        cell.photoImageView.image = resizedImage
-                        self.tempPhoto[indexPath.item] = resizedImage
+                        let resizedImage = UIImage(data:data)?.imageResized()
+                            if let resizedImage = resizedImage {
+                            self.cache.setObject(resizedImage, forKey: self.photoInfoArray[indexPath.item][0] as NSString)
+                                cell.photoImageView.image = resizedImage
+                                print("was in second area")
+                            }
                     }
                     }
-                    else {
-                        print("GOT INTO ELSEEEEE@!")
-                        cell.photoImageView.image = self.tempPhoto[indexPath.item]
-                    }
-                } else {
+                 else {
                     print(error)
                 }
             }
         }
-        // replace placeholder image only if and when a thumbnail is available:
-        /*
-        let place = indexPath.item
-        if place < thumbnailArray.count
-        {
-            cell.imageView?.image = thumbnailArray[place].uiImage
-        }
-         
-          let thisUrl = URL(string: photoInfoArray[indexPath.item][3])
-            if let thisUrl = thisUrl {
-            cell.imageView?.image = generateThumbnailRepresentations(url: thisUrl)
-        } // close check on photoInfoArray */
-        
-        return cell
+       
     }
+
+    return cell
+}
 }
 
     /*
@@ -196,6 +189,20 @@ class DownloadPhotosTableViewController: UITableViewController {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
+     
+     // replace placeholder image only if and when a thumbnail is available:
+     /*
+     let place = indexPath.item
+     if place < thumbnailArray.count
+     {
+         cell.imageView?.image = thumbnailArray[place].uiImage
+     }
+      
+       let thisUrl = URL(string: photoInfoArray[indexPath.item][3])
+         if let thisUrl = thisUrl {
+         cell.imageView?.image = generateThumbnailRepresentations(url: thisUrl)
+     } // close check on photoInfoArray */
+     
     */
 // https://stackoverflow.com/questions/31314412/how-to-resize-image-in-swift
 extension UIImage {
