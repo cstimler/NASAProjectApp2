@@ -20,6 +20,7 @@ class DownloadPhotosTableViewController: UITableViewController {
     
     var dateToStart: String!
     var dateToEnd: String!
+    
     var reuseIdentifier: String = "PhotoCell"
     
     var dataController:DataController!
@@ -28,7 +29,10 @@ class DownloadPhotosTableViewController: UITableViewController {
     var thumbnailArray = [QLThumbnailRepresentation]()
     var photoInfoArray = [[String]]()
     var tempPhoto = [Int:UIImage]()
+    var myCalendar = Calendar(identifier: .gregorian)
+    // setup cache as in: https://www.hackingwithswift.com/example-code/system/how-to-cache-data-using-nscache
     var cache = NSCache<NSString, UIImage>()
+    var passedInteger: Int = 0
     
     
     // https://developer.apple.com/documentation/quicklookthumbnailing/creating_quick_look_thumbnails_to_preview_files_in_your_app
@@ -66,6 +70,20 @@ class DownloadPhotosTableViewController: UITableViewController {
         return thisThumbnail.uiImage
     }
     
+    
+    
+    @IBAction func loadMoreImagesPressed(_ sender: Any) {
+        generateNewStartEndDates()
+        NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error, nasaPhotos) in
+            if success {
+                print("Had success in reload!")
+                self.photoInfo = nasaPhotos
+                self.parsePhotoInfo()
+                self.tableView.reloadData()
+                    }
+                }
+    }
+    
     func parsePhotoInfo()  {
         var photoInfoArrayTemp = [[String]]()
         for photo in photoInfo {
@@ -91,7 +109,24 @@ class DownloadPhotosTableViewController: UITableViewController {
                 }
             }
         
-
+    // https://cocoacasts.com/swift-fundamentals-how-to-convert-a-string-to-a-date-in-swift
+    
+    func generateNewStartEndDates() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let startDate = dateFormatter.date(from: dateToStart)
+        let start = myCalendar.date(byAdding: .day, value: 9, to: startDate!)
+        let end = myCalendar.date(byAdding: .day, value: 17, to: startDate!)
+        dateToStart = dateFormat(date: start!, dateFormat: "yyyy-MM-dd")
+        dateToEnd = dateFormat(date: end!, dateFormat: "yyyy-MM-dd")
+    }
+    
+    // https://stackoverflow.com/questions/35700281/date-format-in-swift
+    func dateFormat(date: Date,dateFormat:String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        return dateFormatter.string(from: date)
+    }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -118,6 +153,10 @@ class DownloadPhotosTableViewController: UITableViewController {
         cell.photoImageView.image = UIImage(named: "VirtualTourist_76")
         // assign the title to the text:
         if photoInfoArray != [] {
+            if photoInfoArray[indexPath.item][3].prefix(23) == "https://www.youtube.com" {
+                cell.photoImageView.image = UIImage(named: "youtubeIcon")
+                cell.photoTextView.text = photoInfoArray[indexPath.item][2]
+            } else {
         cell.photoTextView.text = photoInfoArray[indexPath.item][2]
                     if let cachedVersion = self.cache.object(forKey: self.photoInfoArray[indexPath.item][0] as NSString) {
                         cell.photoImageView.image = cachedVersion
@@ -142,9 +181,34 @@ class DownloadPhotosTableViewController: UITableViewController {
        
     }
 
-    return cell
+    
 }
-}
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        triggerSegway(indexPath.item) { (success) in
+            if success {
+                self.performSegue(withIdentifier: "fromTableToStage", sender: self)
+    }
+        }
+    }
+    
+    // need to make sure that the selected table row is stored in "passedInteger" BEFORE "performSegue" is called:
+    func triggerSegway(_ int: Int, completion: @escaping (Bool) -> Void) {
+        self.passedInteger = int
+        completion(true)
+    }
+    
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let controller = segue.destination as! PhotoStagingViewController
+        
+        controller.dataController = dataController
+        controller.photoArray = self.photoInfoArray[passedInteger]
+    }
+        }
 
     /*
     // Override to support conditional editing of the table view.

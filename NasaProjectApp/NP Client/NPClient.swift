@@ -41,12 +41,19 @@ class NPClient {
         let request = URLRequest(url: Endpoints.getApod(startDate, endDate).url)
         print(request)
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 10
+       // configuration.timeoutIntervalForRequest = 10
+        configuration.timeoutIntervalForResource = 10
         let session = URLSession(configuration: configuration)
         let task = session.dataTask(with: request) {
             data, response, error in
+            if error != nil {
+                print("Error wasn't nil")
+                print(error)
+            }
             guard let data = data else {
                 DispatchQueue.main.async {
+                    print("NO DATA")
+                    print(error)
                     completion(false, error, photoInfo)
                 }
                     return
@@ -99,7 +106,7 @@ class NPClient {
     }
 }
             
-        
+
     
            
 

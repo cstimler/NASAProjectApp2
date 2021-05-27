@@ -68,7 +68,7 @@ class SettingsViewController: UIViewController {
             controller.dateToStart = self.dateToStart
             controller.dateToEnd = self.dateToEnd
             controller.dataController = self.dataController
-        
+
     }
     
 }

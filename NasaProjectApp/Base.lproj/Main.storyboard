@@ -106,15 +106,52 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="CPw-HO-XlO"/>
-                        <barButtonItem title="Load More Images" id="9Pe-RI-vWv"/>
+                        <barButtonItem title="Load More Images" id="9Pe-RI-vWv">
+                            <connections>
+                                <action selector="loadMoreImagesPressed:" destination="910-r8-DcF" id="aP9-7w-hn4"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="6rj-L1-3rP"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="gsb-vZ-xZ5"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="yBs-m0-uAn" kind="show" identifier="fromTableToStage" id="53e-o1-RTM"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rON-VB-Kby" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1869.5652173913045" y="93.75"/>
+        </scene>
+        <!--Photo Staging View Controller-->
+        <scene sceneID="m9G-AP-iw3">
+            <objects>
+                <viewController id="yBs-m0-uAn" customClass="PhotoStagingViewController" customModule="NasaProjectApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ndx-GP-nFC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kwl-RX-PiY">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yo3-Dr-VOx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Kwl-RX-PiY" firstAttribute="leading" secondItem="yo3-Dr-VOx" secondAttribute="leading" id="CtD-zm-BPS"/>
+                            <constraint firstItem="yo3-Dr-VOx" firstAttribute="bottom" secondItem="Kwl-RX-PiY" secondAttribute="bottom" id="Dis-s8-b24"/>
+                            <constraint firstItem="Kwl-RX-PiY" firstAttribute="top" secondItem="yo3-Dr-VOx" secondAttribute="top" id="FM3-R6-evP"/>
+                            <constraint firstItem="yo3-Dr-VOx" firstAttribute="trailing" secondItem="Kwl-RX-PiY" secondAttribute="trailing" id="UyM-eK-TLf"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="PXb-gz-6zQ"/>
+                    <connections>
+                        <outlet property="photoStage" destination="Kwl-RX-PiY" id="7Qf-ov-Dqe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DMK-48-TbZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2854" y="94"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZLi-Dx-ytY">
