@@ -144,7 +144,13 @@
                             <constraint firstItem="yo3-Dr-VOx" firstAttribute="trailing" secondItem="Kwl-RX-PiY" secondAttribute="trailing" id="UyM-eK-TLf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="PXb-gz-6zQ"/>
+                    <navigationItem key="navigationItem" id="PXb-gz-6zQ">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="wI5-dr-JfM">
+                            <connections>
+                                <action selector="addButtonPressed:" destination="yBs-m0-uAn" id="Zl9-Bu-bU5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="photoStage" destination="Kwl-RX-PiY" id="7Qf-ov-Dqe"/>
                     </connections>
@@ -179,6 +185,7 @@
     </scenes>
     <resources>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="128" height="106"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

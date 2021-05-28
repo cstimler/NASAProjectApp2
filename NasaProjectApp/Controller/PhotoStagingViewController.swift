@@ -13,19 +13,31 @@ class PhotoStagingViewController: UIViewController {
     var dataController:DataController!
     
     var photoArray: [String]!
+    
+    var photoImage: UIImage?
 
     @IBOutlet weak var photoStage: UIImageView!
     
+    @IBAction func addButtonPressed(_ sender: Any) {
+        // we will register the current Photo with Core Data:
+        let photo = Photo(context: dataController.viewContext)
+        photo.dateLabel = photoArray[0]
+        
+        
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         print(photoArray)
-        if photoArray[3].prefix(23) == "https://www.youtube.com" {
+        if photoArray[3].prefix(23) == "https://www.youtube.com" || photoArray[3].prefix(24) == "https://player.vimeo.com" {
             openWebpageWithSafari(urlString: photoArray[3])
         } else {
             NPClient.downloadPhotos(urlString: self.photoArray[3]) { (success, error, data) in
             if success {
                 if let data = data {
-                    self.photoStage.image = UIImage(data: data)
+                    self.photoImage = UIImage(data: data)
+                    self.photoStage.image = self.photoImage
+                    
                 }
             }
             else {

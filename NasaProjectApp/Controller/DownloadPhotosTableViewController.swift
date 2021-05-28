@@ -153,7 +153,7 @@ class DownloadPhotosTableViewController: UITableViewController {
         cell.photoImageView.image = UIImage(named: "VirtualTourist_76")
         // assign the title to the text:
         if photoInfoArray != [] {
-            if photoInfoArray[indexPath.item][3].prefix(23) == "https://www.youtube.com" {
+            if photoInfoArray[indexPath.item][3].prefix(23) == "https://www.youtube.com" || photoInfoArray[indexPath.item][3].prefix(24) == "https://player.vimeo.com" {
                 cell.photoImageView.image = UIImage(named: "youtubeIcon")
                 cell.photoTextView.text = photoInfoArray[indexPath.item][2]
             } else {
