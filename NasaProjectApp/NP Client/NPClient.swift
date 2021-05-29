@@ -15,7 +15,8 @@ class NPClient {
     
     struct Auth {
         
-        static var apiKey = "MY_KEY"
+        static var apiKey = "MYKEY"
+
     }
     
     enum Endpoints {

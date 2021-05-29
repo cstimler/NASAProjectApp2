@@ -127,6 +127,26 @@ class DownloadPhotosTableViewController: UITableViewController {
         dateFormatter.dateFormat = dateFormat
         return dateFormatter.string(from: date)
     }
+    
+    func createDateForLabel(dateString: String) -> String {
+        var dateNice: String?
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+
+        let dateFormatterDisplay = DateFormatter()
+        dateFormatterDisplay.dateFormat = "MMM d,yyyy"
+
+        if let date: Date = (dateFormatter.date(from: dateString)) {
+            dateNice = dateFormatterDisplay.string(from: (date as NSDate) as Date)
+        }
+        if let dateNice = dateNice {
+            return dateNice
+        }
+        else {
+            return ""
+        }
+    }
+    
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
