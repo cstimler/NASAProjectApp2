@@ -29,6 +29,17 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     }
     
     
+    
+    @IBAction func favoriteHeartButtonPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "fromStageToFavorites", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let controller = segue.destination as! FavoritesCollectionViewController
+        controller.dataController = dataController
+    }
+    
+    
     @IBAction func addButtonPressed(_ sender: Any) {
         // we will register the current Photo with Core Data:
         let photo = Photo(context: dataController.viewContext)
@@ -36,6 +47,7 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
         photo.blurb = photoArray[1]
         photo.title = photoArray[2]
         photo.urlString = photoArray[3]
+        try? dataController.viewContext.save()
         // https://stackoverflow.com/questions/32297704/convert-uiimage-to-nsdata-and-convert-back-to-uiimage-in-swift/50729656
         photo.pic = generatePicImage().pngData()
     }
@@ -66,6 +78,11 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
         }
         // Do any additional setup after loading the view.
     }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        try? dataController.viewContext.save()
     }
     
     // toggle through a variety of possible views so user can select their preference:

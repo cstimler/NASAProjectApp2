@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F8AD0462661C97900F096D4 /* FavoritesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8AD0452661C97900F096D4 /* FavoritesCollectionViewController.swift */; };
+		9F8AD04D2661CB1400F096D4 /* PicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8AD04C2661CB1400F096D4 /* PicCollectionViewCell.swift */; };
+		9F8AD0502662278600F096D4 /* FavoritePhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8AD04F2662278600F096D4 /* FavoritePhotosViewController.swift */; };
 		9F937ABE265CAEC2007B5054 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937ABD265CAEC2007B5054 /* AppDelegate.swift */; };
 		9F937AC0265CAEC2007B5054 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937ABF265CAEC2007B5054 /* SceneDelegate.swift */; };
 		9F937AC2265CAEC2007B5054 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F937AC1265CAEC2007B5054 /* ViewController.swift */; };
@@ -26,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F8AD0452661C97900F096D4 /* FavoritesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollectionViewController.swift; sourceTree = "<group>"; };
+		9F8AD04C2661CB1400F096D4 /* PicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCollectionViewCell.swift; sourceTree = "<group>"; };
+		9F8AD04F2662278600F096D4 /* FavoritePhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePhotosViewController.swift; sourceTree = "<group>"; };
 		9F937ABA265CAEC2007B5054 /* NasaProjectApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NasaProjectApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F937ABD265CAEC2007B5054 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F937ABF265CAEC2007B5054 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +132,8 @@
 				9F937AE3265CB5C6007B5054 /* SettingsViewController.swift */,
 				9F937AE6265CB608007B5054 /* DownloadPhotosTableViewController.swift */,
 				9F937AE9265CB637007B5054 /* PhotoStagingViewController.swift */,
+				9F8AD0452661C97900F096D4 /* FavoritesCollectionViewController.swift */,
+				9F8AD04F2662278600F096D4 /* FavoritePhotosViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -141,6 +149,7 @@
 		9F937AF7265D1DD4007B5054 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				9F8AD04C2661CB1400F096D4 /* PicCollectionViewCell.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -215,8 +224,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F8AD0462661C97900F096D4 /* FavoritesCollectionViewController.swift in Sources */,
 				9F937AF2265CF9F1007B5054 /* Photo + Extension.swift in Sources */,
 				9F937AC2265CAEC2007B5054 /* ViewController.swift in Sources */,
+				9F8AD04D2661CB1400F096D4 /* PicCollectionViewCell.swift in Sources */,
 				9F937AD8265CAFAA007B5054 /* DataController.swift in Sources */,
 				9F937AEA265CB637007B5054 /* PhotoStagingViewController.swift in Sources */,
 				9F937AF5265D11EC007B5054 /* CustomErrors.swift in Sources */,
@@ -226,6 +237,7 @@
 				9F937AE1265CB5B2007B5054 /* GreetingsViewController.swift in Sources */,
 				9F937ABE265CAEC2007B5054 /* AppDelegate.swift in Sources */,
 				9F937ADE265CB1A3007B5054 /* NASAPhotosSearchResponse.swift in Sources */,
+				9F8AD0502662278600F096D4 /* FavoritePhotosViewController.swift in Sources */,
 				9F937AC0265CAEC2007B5054 /* SceneDelegate.swift in Sources */,
 				9F937AE4265CB5C6007B5054 /* SettingsViewController.swift in Sources */,
 			);
