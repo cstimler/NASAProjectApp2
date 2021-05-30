@@ -6,10 +6,17 @@
 //
 
 import UIKit
+import CoreData
 
-class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDelegate {
+class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDelegate, NSFetchedResultsControllerDelegate {
     
-    var photoCoreData: Photo!
+    // var photoCoreData: Photo!
+    
+    var arrayOfPhotos: [Photo]!
+    
+    var dataController: DataController!
+    
+    var selectedDateLabel: String?
     
     
     @IBOutlet weak var infoText: UITextView!
@@ -23,7 +30,7 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
     
     @IBAction func showSharingOptions(_ sender: Any) {
         var image: UIImage?
-        let data = photoCoreData.pic
+        let data = arrayOfPhotos[0].pic
         if let data = data {
         image = UIImage(data: data)
         }
@@ -34,21 +41,42 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let pic = photoCoreData.pic
+        setupFetchedResultsController()
+        let thisPhoto = arrayOfPhotos[0]
+        let pic = thisPhoto.pic
         if let pic = pic {
         imageView.image = UIImage(data: pic)
         }
         infoText.isHidden = true
-        let date = photoCoreData.dateLabel
+        let date = thisPhoto.dateLabel
         let newDate = createDateForLabel(dateString: date!)
-        let newTitle = photoCoreData.title
-        let newBlurb = photoCoreData.blurb
+        let newTitle = thisPhoto.title
+        let newBlurb = thisPhoto.blurb
         if let newTitle = newTitle {
             if let newBlurb = newBlurb {
-        infoText.text = newDate + ":" + newTitle + "\n\n" + newBlurb
+                // blurb in this context should have more info, including date and title since this can't be easily retrieved at this point:
+        infoText.text = newDate + ": " + newTitle + "\n\n" + newBlurb
         }
         }
         // Do any additional setup after loading the view.
+    }
+    
+    func setupFetchedResultsController() {
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        // let's find the unique photo for this date:
+        let predicate = NSPredicate(format: "dateLabel == %@", selectedDateLabel!)
+        fetchRequest.predicate = predicate
+        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            arrayOfPhotos = try dataController.viewContext.fetch(fetchRequest)
+            print("Selected date label:")
+            print(selectedDateLabel)
+            print("In SetupFetchedCtnlr")
+            print(arrayOfPhotos)
+        } catch {
+            print(error)
+        }
     }
     
     func createDateForLabel(dateString: String) -> String {

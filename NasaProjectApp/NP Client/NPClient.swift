@@ -15,7 +15,7 @@ class NPClient {
     
     struct Auth {
         
-        static var apiKey = "MYKEY"
+        static var apiKey = "MYAPIKEY"
 
     }
     

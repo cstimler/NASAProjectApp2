@@ -35,8 +35,9 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let controller = segue.destination as! FavoritesCollectionViewController
-        controller.dataController = dataController
+        let controller = segue.destination as! UINavigationController
+        let favoritesCollectionViewController = controller.topViewController as! FavoritesCollectionViewController
+        favoritesCollectionViewController.dataController = dataController
     }
     
     

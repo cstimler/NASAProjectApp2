@@ -16,12 +16,27 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
     
     var fetchedResultsController:NSFetchedResultsController<Photo>?
     
-    var photoCoreData: Photo!
+    var selectedDateLabel: String?
     
+   // var photoCoreData: Photo!
+    
+   /*
+    @IBAction func goBackToCalendar(_ sender: Any) {
+        
+        let controller: SettingsViewController
+        controller = storyboard?.instantiateViewController(identifier: "SettingsViewController") as! SettingsViewController
+        controller.dataController = dataController
+        present(controller, animated: true, completion: nil)
+    }
+    */
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
-
+    @IBAction func backToCalendar(_ sender: Any) {
+        
+        performSegue(withIdentifier: "unwindSegue", sender: self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFetchedResultsController()
@@ -34,6 +49,12 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupFetchedResultsController()
+        print("View Did Appear")
     }
     
     func setupFetchedResultsController() {
@@ -76,7 +97,7 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PicCollectionViewCell
     
         // Configure the cell
-        photoCoreData = fetchedResultsController?.object(at: indexPath)
+        let photoCoreData = fetchedResultsController?.object(at: indexPath)
         let photoData = photoCoreData?.pic
         if let photoData = photoData {
         let thisImage = UIImage(data: photoData)
@@ -86,6 +107,8 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // store the unique identifier of the photo - the dateLabel - in a global variable to be passed in segue
+        selectedDateLabel = fetchedResultsController?.object(at: indexPath).dateLabel
         performSegue(withIdentifier: "fromFavoriteToFavorite", sender: self)
     }
     
@@ -114,9 +137,23 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let controller = segue.destination as! FavoritePhotosViewController
         
-        controller.photoCoreData = photoCoreData
+        if segue.identifier == "fromFavoriteToFavorite"
+        {
+        let controller = segue.destination as! FavoritePhotosViewController
+        controller.dataController = dataController
+            controller.selectedDateLabel = selectedDateLabel
+        
+        }
+        
+        if segue.identifier == "unwindSegue"
+        {
+            let controller = segue.destination as! SettingsViewController
+            controller.dataController = dataController
+        }
+        
+    //    controller.photoCoreData = photoCoreData
+     //   print(photoCoreData)
     }
 
     // MARK: UICollectionViewDelegate
@@ -125,7 +162,7 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
 
 // adapted from: https://stackoverflow.com/questions/38028013/how-to-set-uicollectionviewcell-width-and-height-programmatically
     extension FavoritesCollectionViewController: UICollectionViewDelegateFlowLayout{
-      optional func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
       {
                 let dimension = mathForCalculatingCollectionViewCell()
                 return CGSize(width: dimension, height: dimension)

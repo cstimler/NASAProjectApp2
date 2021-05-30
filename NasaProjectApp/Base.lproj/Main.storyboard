@@ -12,7 +12,7 @@
         <!--Settings View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SettingsViewController" customModule="NasaProjectApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" id="BYZ-38-t0r" customClass="SettingsViewController" customModule="NasaProjectApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -132,7 +132,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SxV-TX-xJM">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SxV-TX-xJM">
                             <size key="itemSize" width="128" height="128"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -173,17 +173,23 @@
                     </collectionView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="i69-Ye-RyR">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="calendar" catalog="system" id="kG7-eh-vzx"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="calendar" catalog="system" id="kG7-eh-vzx">
+                            <connections>
+                                <action selector="backToCalendar:" destination="Dlf-FM-L3N" id="HB1-Gq-J30"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="flowLayout" destination="SxV-TX-xJM" id="g1K-eL-2UL"/>
                         <segue destination="ayn-Vv-Fh9" kind="show" identifier="fromFavoriteToFavorite" id="a3S-Jb-LLf"/>
+                        <segue destination="7cl-HA-r6h" kind="unwind" identifier="unwindSegue" unwindAction="unwind:" id="gCw-rm-PpK"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2xC-7U-Q0d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="7cl-HA-r6h" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3604" y="-579"/>
+            <point key="canvasLocation" x="4408.695652173913" y="-936.16071428571422"/>
         </scene>
         <!--Favorite Photos View Controller-->
         <scene sceneID="yVW-ib-IKz">
@@ -241,7 +247,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0wu-Pk-4nB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4528" y="-579"/>
+            <point key="canvasLocation" x="5621.739130434783" y="-936.16071428571422"/>
         </scene>
         <!--Photo Staging View Controller-->
         <scene sceneID="m9G-AP-iw3">
@@ -302,7 +308,7 @@
                                 <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="favoriteHeartButtonPressed:" destination="yBs-m0-uAn" id="Vmu-8J-SCq"/>
-                                    <segue destination="Dlf-FM-L3N" kind="show" id="NQV-Lo-KmN"/>
+                                    <segue destination="agS-V6-Wy2" kind="presentation" identifier="fromStageToFavorites" modalPresentationStyle="fullScreen" id="NQV-Lo-KmN"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -322,6 +328,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="9mb-PY-UYW" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="C73-JZ-ErV"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wa7-aW-9S5">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -339,6 +346,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yjw-Mu-MR5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="18.840579710144929" y="93.75"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Y7h-Jc-CNC">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="agS-V6-Wy2" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="tbS-gq-N18"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eyE-K4-yEf">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Dlf-FM-L3N" kind="relationship" relationship="rootViewController" id="JHz-NC-plz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I3d-1y-RaR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3498.5507246376815" y="-936.16071428571422"/>
         </scene>
     </scenes>
     <resources>
