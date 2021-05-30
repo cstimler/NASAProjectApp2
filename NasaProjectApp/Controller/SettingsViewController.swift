@@ -26,6 +26,10 @@ class SettingsViewController: UIViewController {
         print(dateToEnd)
     }
     
+    @IBAction func favoriteHeartButtonPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "fromSettingsToFavorites", sender: self)
+    }
+    
     // https://stackoverflow.com/questions/35700281/date-format-in-swift
     func dateFormatter(date: Date,dateFormat:String) -> String {
         let dateFormatter = DateFormatter()
@@ -61,6 +65,9 @@ class SettingsViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "fromSettingsToDownload"
+        {
         let controller = segue.destination as! DownloadPhotosTableViewController
         
             print("Passing start:" + self.dateToStart)
@@ -68,6 +75,14 @@ class SettingsViewController: UIViewController {
             controller.dateToStart = self.dateToStart
             controller.dateToEnd = self.dateToEnd
             controller.dataController = self.dataController
+        }
+        
+        if segue.identifier == "fromSettingsToFavorites"
+        {
+            let controller = segue.destination as! UINavigationController
+            let favoritesCollectionViewController = controller.topViewController as! FavoritesCollectionViewController
+            favoritesCollectionViewController.dataController = dataController
+        }
 
     }
     

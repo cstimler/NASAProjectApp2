@@ -115,8 +115,8 @@ class DownloadPhotosTableViewController: UITableViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let startDate = dateFormatter.date(from: dateToStart)
-        let start = myCalendar.date(byAdding: .day, value: 9, to: startDate!)
-        let end = myCalendar.date(byAdding: .day, value: 17, to: startDate!)
+        let start = myCalendar.date(byAdding: .day, value: 8, to: startDate!)
+        let end = myCalendar.date(byAdding: .day, value: 15, to: startDate!)
         dateToStart = dateFormat(date: start!, dateFormat: "yyyy-MM-dd")
         dateToEnd = dateFormat(date: end!, dateFormat: "yyyy-MM-dd")
     }
@@ -177,7 +177,7 @@ class DownloadPhotosTableViewController: UITableViewController {
                 cell.photoImageView.image = UIImage(named: "youtubeIcon")
                 cell.photoTextView.text = photoInfoArray[indexPath.item][2]
             } else {
-        cell.photoTextView.text = photoInfoArray[indexPath.item][2]
+                cell.photoTextView.text = createDateForLabel(dateString: photoInfoArray[indexPath.item][0]) + photoInfoArray[indexPath.item][2]
                     if let cachedVersion = self.cache.object(forKey: self.photoInfoArray[indexPath.item][0] as NSString) {
                         cell.photoImageView.image = cachedVersion
                         print("was in first area")

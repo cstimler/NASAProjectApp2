@@ -23,7 +23,7 @@
                                 <state key="normal" title="Ready!"/>
                                 <connections>
                                     <action selector="readyButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ePL-1Y-QQ0"/>
-                                    <segue destination="910-r8-DcF" kind="show" id="rdj-Gu-T1x"/>
+                                    <segue destination="910-r8-DcF" kind="show" identifier="fromSettingsToDownload" id="rdj-Gu-T1x"/>
                                 </connections>
                             </button>
                             <datePicker contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="58M-xb-cGu">
@@ -39,7 +39,15 @@
                             <constraint firstItem="CrV-DD-2nj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="esV-SY-WQW"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="1I5-zE-ZBQ"/>
+                    <navigationItem key="navigationItem" id="1I5-zE-ZBQ">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="heart.fill" catalog="system" id="7NI-b2-LdK">
+                            <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="favoriteHeartButtonPressed:" destination="BYZ-38-t0r" id="cuV-zq-SxJ"/>
+                                <segue destination="agS-V6-Wy2" kind="presentation" identifier="fromSettingsToFavorites" modalPresentationStyle="fullScreen" id="5Us-Yr-LuM"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="datePicker" destination="58M-xb-cGu" id="2z9-aG-3tn"/>
                     </connections>
@@ -122,7 +130,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rON-VB-Kby" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1869.5652173913045" y="93.75"/>
+            <point key="canvasLocation" x="1925" y="125"/>
         </scene>
         <!--Favorites Collection View Controller-->
         <scene sceneID="QhB-50-Ids">
@@ -236,6 +244,11 @@
                             <barButtonItem title="Item" image="info.circle" catalog="system" id="YZ4-g1-QHh">
                                 <connections>
                                     <action selector="infoButtonPressed:" destination="ayn-Vv-Fh9" id="7a3-m0-m3O"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Delete Pic?" id="q6c-wo-vqM">
+                                <connections>
+                                    <action selector="deletePhoto:" destination="ayn-Vv-Fh9" id="bjy-4z-qXj"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -367,6 +380,9 @@
             <point key="canvasLocation" x="3498.5507246376815" y="-936.16071428571422"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="5Us-Yr-LuM"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="128" height="106"/>
         <image name="calendar" catalog="system" width="128" height="106"/>

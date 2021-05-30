@@ -7,6 +7,7 @@
 
 import UIKit
 import SafariServices
+import CoreData
 
 class PhotoStagingViewController: UIViewController, UINavigationControllerDelegate {
     
@@ -43,15 +44,45 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     
     @IBAction func addButtonPressed(_ sender: Any) {
         // we will register the current Photo with Core Data:
+        if thisIsARepeatPhoto() {
+            showPhotoFailure(message: "You have already saved this photo.  To resave, please delete the old photo and save this new one.")
+        }
         let photo = Photo(context: dataController.viewContext)
         photo.dateLabel = photoArray[0]
         photo.blurb = photoArray[1]
         photo.title = photoArray[2]
         photo.urlString = photoArray[3]
-        try? dataController.viewContext.save()
         // https://stackoverflow.com/questions/32297704/convert-uiimage-to-nsdata-and-convert-back-to-uiimage-in-swift/50729656
         photo.pic = generatePicImage().pngData()
+        do {
+        try dataController.viewContext.save()
+    } catch
+    {
+        print("GOT INTO ERROR FOR SAVING CONTEXT")
+        print(error)}
     }
+    
+    func thisIsARepeatPhoto() -> Bool {
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        // let's find the unique photo for this date:
+        let predicate = NSPredicate(format: "dateLabel == %@", photoArray[0])
+        fetchRequest.predicate = predicate
+        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            let arrayOfPhotos = try dataController.viewContext.fetch(fetchRequest)
+            if arrayOfPhotos == [] {
+                return false
+            } else {
+                return true
+            }
+        } catch {
+            print(error)
+            return true   // hmmm
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print(photoArray)
@@ -129,6 +160,14 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
         UIGraphicsEndImageContext()
         
         return picImage
+    }
+    
+    func showPhotoFailure(message: String) {
+        DispatchQueue.main.async {
+        let alertVC = UIAlertController(title: "REPEAT PHOTOS!", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alertVC, animated: true, completion: nil)
+    }
     }
     
 

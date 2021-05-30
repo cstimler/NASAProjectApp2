@@ -19,9 +19,8 @@ class DataController {
     
     init(modelName:String) {
         persistentContainer = NSPersistentContainer(name: modelName)
-        // must add this if using constraints in CoreDate (unique dateLabels):
-        persistentContainer.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-
+        // must add something like this if using constraints in CoreDate (unique dateLabels) to avoid saving conflicts.  In this case, user will not be able to resave/overwrite an old photo unless the old photo is deleted first! :
+        persistentContainer.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
     }
     
     

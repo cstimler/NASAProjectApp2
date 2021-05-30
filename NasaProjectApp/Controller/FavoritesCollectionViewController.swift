@@ -51,20 +51,35 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupFetchedResultsController()
+        self.loadView()
+    }
+    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupFetchedResultsController()
+        self.loadView()
         print("View Did Appear")
     }
+ */
     
     func setupFetchedResultsController() {
+        print("111")
         let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        print("222")
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
+        print("333")
         fetchRequest.sortDescriptors = [sortDescriptor]
+        print("444")
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        print("555")
         fetchedResultsController?.delegate = self
         do {
             try fetchedResultsController?.performFetch()
+            print("Number of Objects is:")
+            print(fetchedResultsController?.sections?[0].numberOfObjects ?? 0)
         } catch {
             fatalError("Unable to fetch: \(error.localizedDescription)")
     }

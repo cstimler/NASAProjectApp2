@@ -18,6 +18,8 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
     
     var selectedDateLabel: String?
     
+    var thisPhoto: Photo!
+    
     
     @IBOutlet weak var infoText: UITextView!
     
@@ -38,11 +40,17 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         present(controller, animated: true, completion: nil)
     }
     
+    @IBAction func deletePhoto(_ sender: Any) {
+        areYouSureYouWantToDelete() 
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(wasTapped(_:)))
+        imageView.addGestureRecognizer(tap)
         setupFetchedResultsController()
-        let thisPhoto = arrayOfPhotos[0]
+        thisPhoto = arrayOfPhotos[0]
         let pic = thisPhoto.pic
         if let pic = pic {
         imageView.image = UIImage(data: pic)
@@ -61,6 +69,16 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         // Do any additional setup after loading the view.
     }
     
+    @objc func wasTapped(_ sender:UIGestureRecognizer) {
+        print("Registers Tap")
+        if infoText.isHidden == false {
+            infoText.isHidden = true
+        }
+          //      self.photoImage = UIImage(data: self.photoData)}
+    }
+        
+    
+    
     func setupFetchedResultsController() {
         let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
         // let's find the unique photo for this date:
@@ -76,6 +94,26 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
             print(arrayOfPhotos)
         } catch {
             print(error)
+         //
+        }
+    }
+    
+    func setupFetchedResultsController2() {
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        // let's find the unique photo for this date:
+        let predicate = NSPredicate(format: "dateLabel == %@", selectedDateLabel!)
+        fetchRequest.predicate = predicate
+        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            arrayOfPhotos = try dataController.viewContext.fetch(fetchRequest)
+            print("Selected date label:")
+            print(selectedDateLabel)
+            print("In SetupFetchedCtnlr")
+            print(arrayOfPhotos)
+        } catch {
+            print(error)
+         //   dataController.viewContext.delete(<#T##object: NSManagedObject##NSManagedObject#>)
         }
     }
     
@@ -97,6 +135,17 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
             return ""
         }
     }
+    // https://stackoverflow.com/questions/25511945/swift-alert-view-with-ok-and-cancel-which-button-tapped:
     
+    func areYouSureYouWantToDelete() {
+        let deleteAlert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this photo?", preferredStyle: UIAlertController.Style.alert)
+    deleteAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+        self.dataController.viewContext.delete(self.thisPhoto)
+    }))
+    deleteAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+          return
+    }))
+    present(deleteAlert, animated: true, completion: nil)
+    }
 
 }
