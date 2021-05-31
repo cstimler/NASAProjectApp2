@@ -33,6 +33,12 @@ class DownloadPhotosTableViewController: UITableViewController {
     // setup cache as in: https://www.hackingwithswift.com/example-code/system/how-to-cache-data-using-nscache
     var cache = NSCache<NSString, UIImage>()
     var passedInteger: Int = 0
+    // keep count of photos loaded to manage enabling of download button:
+    var countPhotos: Int = 0
+    
+    @IBOutlet weak var loadMoreImagesButton: UIBarButtonItem!
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     
     // https://developer.apple.com/documentation/quicklookthumbnailing/creating_quick_look_thumbnails_to_preview_files_in_your_app
@@ -73,12 +79,17 @@ class DownloadPhotosTableViewController: UITableViewController {
     
     
     @IBAction func loadMoreImagesPressed(_ sender: Any) {
+        loadMoreImagesButton.isEnabled = false
+        // activity indicator should start up again once a reload is in progress:
+        activityIndicatorIsVisible(true)
         generateNewStartEndDates()
         NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error, nasaPhotos) in
             if success {
                 print("Had success in reload!")
                 self.photoInfo = nasaPhotos
                 self.parsePhotoInfo()
+                // about to reload populated tableview:
+                self.activityIndicatorIsVisible(false)
                 self.tableView.reloadData()
                     }
                 }
@@ -97,6 +108,10 @@ class DownloadPhotosTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // start activity indicator upon loading view:
+        activityIndicatorIsVisible(true)
+        // disable load button upon loading:
+        loadMoreImagesButton.isEnabled = false
         print("Date to start is:" + dateToStart)
         print("Date to eend is:" + dateToEnd)
         NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error, nasaPhotos) in
@@ -104,6 +119,8 @@ class DownloadPhotosTableViewController: UITableViewController {
                 print("Had success in vc!")
                 self.photoInfo = nasaPhotos
                 self.parsePhotoInfo()
+                // about to reload, make activity indicator disappear:
+                self.activityIndicatorIsVisible(false)
                 self.tableView.reloadData()
                     }
                 }
@@ -134,7 +151,7 @@ class DownloadPhotosTableViewController: UITableViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd"
 
         let dateFormatterDisplay = DateFormatter()
-        dateFormatterDisplay.dateFormat = "MMM d,yyyy"
+        dateFormatterDisplay.dateFormat = "MMM d, yyyy"
 
         if let date: Date = (dateFormatter.date(from: dateString)) {
             dateNice = dateFormatterDisplay.string(from: (date as NSDate) as Date)
@@ -144,6 +161,22 @@ class DownloadPhotosTableViewController: UITableViewController {
         }
         else {
             return ""
+        }
+    }
+    
+    func keepCountOfPhotoDownloads() {
+        countPhotos = countPhotos + 1
+        if countPhotos == 8 {
+            loadMoreImagesButton.isEnabled = true
+            countPhotos = 0
+        }
+    }
+    
+    func activityIndicatorIsVisible(_ isVisible: Bool) {
+        if isVisible {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
         }
     }
     
@@ -174,16 +207,20 @@ class DownloadPhotosTableViewController: UITableViewController {
         // assign the title to the text:
         if photoInfoArray != [] {
             if photoInfoArray[indexPath.item][3].prefix(23) == "https://www.youtube.com" || photoInfoArray[indexPath.item][3].prefix(24) == "https://player.vimeo.com" {
+                // after 8 downloads we re-enable download button
+                self.keepCountOfPhotoDownloads()
                 cell.photoImageView.image = UIImage(named: "youtubeIcon")
-                cell.photoTextView.text = photoInfoArray[indexPath.item][2]
+                cell.photoTextView.text = createDateForLabel(dateString: photoInfoArray[indexPath.item][0]) + ":   " + photoInfoArray[indexPath.item][2]
             } else {
-                cell.photoTextView.text = createDateForLabel(dateString: photoInfoArray[indexPath.item][0]) + photoInfoArray[indexPath.item][2]
+                cell.photoTextView.text = createDateForLabel(dateString: photoInfoArray[indexPath.item][0]) + ":   " + photoInfoArray[indexPath.item][2]
                     if let cachedVersion = self.cache.object(forKey: self.photoInfoArray[indexPath.item][0] as NSString) {
                         cell.photoImageView.image = cachedVersion
                         print("was in first area")
                     } else {
                         NPClient.downloadPhotos(urlString: self.photoInfoArray[indexPath.item][3]) { (success, error, data) in
                             if success {
+                                // after 8 downloads we re-enable download button
+                                self.keepCountOfPhotoDownloads()
                         if let data = data {
                         let resizedImage = UIImage(data:data)?.imageResized()
                             if let resizedImage = resizedImage {

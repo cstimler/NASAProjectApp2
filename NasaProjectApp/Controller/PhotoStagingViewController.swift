@@ -9,7 +9,7 @@ import UIKit
 import SafariServices
 import CoreData
 
-class PhotoStagingViewController: UIViewController, UINavigationControllerDelegate {
+class PhotoStagingViewController: UIViewController, UINavigationControllerDelegate, UITextViewDelegate {
     
     var dataController:DataController!
     
@@ -25,6 +25,19 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     
     @IBOutlet weak var infoTextView: UITextView!
     
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet weak var titleTextView: UITextView!
+    
+    
+    @IBAction func makeTitleVisible(_ sender: Any) {
+        // actually toggles title visibility
+        titleTextView.isHidden = !titleTextView.isHidden
+    }
+    
+    
+    
     @IBAction func infoButtonPressed(_ sender: Any) {
         infoTextView.isHidden = !infoTextView.isHidden
     }
@@ -33,6 +46,14 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     
     @IBAction func favoriteHeartButtonPressed(_ sender: Any) {
         self.performSegue(withIdentifier: "fromStageToFavorites", sender: self)
+    }
+    
+    func activityIndicatorIsVisible(_ isVisible: Bool) {
+        if isVisible {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -82,14 +103,43 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
         }
     }
     
+    func setupTitleTextView() {
+        titleTextView.isHidden = true
+        titleTextView.text = photoArray[2]
+        titleTextView.delegate = self
+        titleTextView.typingAttributes = titleTextAttributes
+        let fancyString = NSAttributedString(string: photoArray[2], attributes: titleTextAttributes)
+        titleTextView.attributedText = fancyString
+        titleTextView.isEditable = true
+        titleTextView.textAlignment = .center
+    }
+    
+    let titleTextAttributes : [NSAttributedString.Key: Any] = [
+        .strokeColor: UIColor.black,
+        .foregroundColor: UIColor.white,
+        .font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 30), .strokeWidth: -5]
+    
+   //Allows return to retract keyboard: https://stackoverflow.com/questions/50462356/xcode-9-textviewshouldreturn
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            if(text == "\n") {
+                textView.resignFirstResponder()
+                return true
+            } else {
+                return true
+            }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print(photoArray)
+        // start activity indicator as photo is loading:
+        activityIndicatorIsVisible(true)
         infoTextView.isHidden = true
         infoTextView.isEditable = false
         infoTextView.text = photoArray[1]
         infoTextView.isScrollEnabled = true
+        setupTitleTextView()
         photoStage.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(wasTapped(_:)))
         photoStage.addGestureRecognizer(tap)
@@ -99,6 +149,8 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
             NPClient.downloadPhotos(urlString: self.photoArray[3]) { (success, error, data) in
             if success {
                 if let data = data {
+                    // photo about to appear, turn off activity indicator:
+                    self.activityIndicatorIsVisible(false)
                     self.photoImage = UIImage(data: data)
                     self.photoStage.image = self.photoImage
                     self.photoData = data

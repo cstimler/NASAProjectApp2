@@ -16,6 +16,8 @@ class SettingsViewController: UIViewController {
     var dataController:DataController!
     var myCalendar = Calendar(identifier: .gregorian)
     
+    var dateForCalendar: Date?
+    
     @IBOutlet weak var datePicker: UIDatePicker!
     
     @IBAction func readyButtonPressed(_ sender: Any) {
@@ -52,11 +54,28 @@ class SettingsViewController: UIViewController {
         datePicker.maximumDate = Date()
         // https://stackoverflow.com/questions/3785610/uidatepicker-upon-date-changed
         datePicker.addTarget(self, action: #selector(datePickerChanged(datePicker:)), for: .valueChanged)
+        getStartDateFromPlist()
+    }
+    // remember the last date that we were searching at from previous session, retrieve it, and set the datePicker:
+    func getStartDateFromPlist() {
+        if let thisStartingDate = UserDefaults.standard.value(forKey: "startDate") {
+            datePicker.date = thisStartingDate as! Date
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // let's store the starting date in plist file!
+        if let dateForCalendar = dateForCalendar {
+        let a = dateForCalendar as Date
+        UserDefaults.standard.setValue(a, forKey: "startDate")
+    }
     }
     
     // https://stackoverflow.com/questions/3785610/uidatepicker-upon-date-changed
     @objc func datePickerChanged(datePicker: UIDatePicker) {
         print(datePicker.date)
+        dateForCalendar = datePicker.date
         dateToStart = dateFormatter(date: datePicker.date, dateFormat: "yyyy-MM-dd")
         let dateFinal = myCalendar.date(byAdding: .day, value: 7, to: datePicker.date)
         if let dateFinal = dateFinal {
