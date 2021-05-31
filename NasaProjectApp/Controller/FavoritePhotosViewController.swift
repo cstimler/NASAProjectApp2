@@ -69,6 +69,24 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         // Do any additional setup after loading the view.
     }
     
+    // amazing code that I can use to pass the dataController back to the previous viewcontroller when accessed using back button!: https://stackoverflow.com/questions/27713747/execute-action-when-back-bar-button-of-uinavigationcontroller-is-pressed
+    override func viewWillDisappear(_ animated: Bool) {
+        try? dataController.viewContext.save()
+        if isMovingFromParent {
+            print("Inside parenthesis")
+                    if let viewControllers = self.navigationController?.viewControllers {
+                        if (viewControllers.count >= 1) {
+                            print("Inside second parenthesis")
+                            let previousViewController = viewControllers[viewControllers.count-1] as! FavoritesCollectionViewController
+                            // whatever you want to do
+                            previousViewController.dataController = dataController
+                        }
+                    }
+                }
+    }
+    
+    
+       
     @objc func wasTapped(_ sender:UIGestureRecognizer) {
         print("Registers Tap")
         if infoText.isHidden == false {
@@ -98,24 +116,6 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         }
     }
     
-    func setupFetchedResultsController2() {
-        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
-        // let's find the unique photo for this date:
-        let predicate = NSPredicate(format: "dateLabel == %@", selectedDateLabel!)
-        fetchRequest.predicate = predicate
-        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        do {
-            arrayOfPhotos = try dataController.viewContext.fetch(fetchRequest)
-            print("Selected date label:")
-            print(selectedDateLabel)
-            print("In SetupFetchedCtnlr")
-            print(arrayOfPhotos)
-        } catch {
-            print(error)
-         //   dataController.viewContext.delete(<#T##object: NSManagedObject##NSManagedObject#>)
-        }
-    }
     
     func createDateForLabel(dateString: String) -> String {
         var dateNice: String?
@@ -123,7 +123,7 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         dateFormatter.dateFormat = "yyyy-MM-dd"
 
         let dateFormatterDisplay = DateFormatter()
-        dateFormatterDisplay.dateFormat = "MMM d,yyyy"
+        dateFormatterDisplay.dateFormat = "MMM d, yyyy"
 
         if let date: Date = (dateFormatter.date(from: dateString)) {
             dateNice = dateFormatterDisplay.string(from: (date as NSDate) as Date)

@@ -10,6 +10,14 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    // Reference: https://stackoverflow.com/questions/36358032/override-app-orientation-setting/48120684#48120684
+    // for below 5 lines: (with some modifications) to control orientation in individual view controller
+    
+    var autoRotation: Bool = true
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return autoRotation ? .allButUpsideDown : .portrait
+      }
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

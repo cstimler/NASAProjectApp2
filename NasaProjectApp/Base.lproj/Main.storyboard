@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Settings View Controller-->
+        <!--Are You Ready?-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="SettingsViewController" id="BYZ-38-t0r" customClass="SettingsViewController" customModule="NasaProjectApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -17,10 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CrV-DD-2nj">
-                                <rect key="frame" x="156" y="764" width="120" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CrV-DD-2nj">
+                                <rect key="frame" x="117" y="512" width="180" height="60"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <state key="normal" title="Ready!"/>
+                                <state key="normal" title="I'm Ready!"/>
                                 <connections>
                                     <action selector="readyButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ePL-1Y-QQ0"/>
                                     <segue destination="910-r8-DcF" kind="show" identifier="fromSettingsToDownload" id="rdj-Gu-T1x"/>
@@ -29,17 +29,28 @@
                             <datePicker contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="58M-xb-cGu">
                                 <rect key="frame" x="0.0" y="434" width="414" height="162"/>
                             </datePicker>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are You Ready to Explore the Universe?  Pick a Date to Start Your Adventure!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DxF-6a-Jdg">
+                                <rect key="frame" x="57" y="108" width="300" height="148"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="U7z-lz-Eo7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="CrV-DD-2nj" firstAttribute="top" secondItem="58M-xb-cGu" secondAttribute="bottom" constant="50" id="9Jp-jj-mzL"/>
-                            <constraint firstItem="58M-xb-cGu" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Zkx-fZ-tA8"/>
+                            <constraint firstItem="CrV-DD-2nj" firstAttribute="top" secondItem="58M-xb-cGu" secondAttribute="bottom" constant="20" id="9Jp-jj-mzL"/>
+                            <constraint firstItem="58M-xb-cGu" firstAttribute="top" secondItem="DxF-6a-Jdg" secondAttribute="bottom" constant="20" id="Phz-S8-NhB"/>
                             <constraint firstItem="58M-xb-cGu" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bfP-Mo-5fE"/>
                             <constraint firstItem="CrV-DD-2nj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="esV-SY-WQW"/>
+                            <constraint firstItem="DxF-6a-Jdg" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="m2L-tq-7XN"/>
+                            <constraint firstItem="DxF-6a-Jdg" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="xtv-Wz-3Ih"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="1I5-zE-ZBQ">
+                    <navigationItem key="navigationItem" title="Are You Ready?" id="1I5-zE-ZBQ">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="heart.fill" catalog="system" id="7NI-b2-LdK">
                             <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
@@ -56,7 +67,7 @@
             </objects>
             <point key="canvasLocation" x="928.98550724637687" y="93.75"/>
         </scene>
-        <!--Download Photos Table View Controller-->
+        <!--Some Incredible Photos:-->
         <scene sceneID="H7T-Du-Nok">
             <objects>
                 <tableViewController id="910-r8-DcF" customClass="DownloadPhotosTableViewController" customModule="NasaProjectApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -91,9 +102,8 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrowshape.turn.up.right.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0iS-2v-dHw">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="arrowshape.turn.up.right.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0iS-2v-dHw">
                                             <rect key="frame" x="363" y="0.0" width="51" height="80"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -103,10 +113,14 @@
                                         <constraint firstAttribute="bottom" secondItem="ld7-0Q-Gtx" secondAttribute="bottom" id="jch-Nk-cZv"/>
                                         <constraint firstItem="ld7-0Q-Gtx" firstAttribute="top" secondItem="Dr5-4p-dIs" secondAttribute="top" id="m81-EG-tuX"/>
                                         <constraint firstAttribute="bottom" secondItem="R8Z-hF-bda" secondAttribute="bottom" id="oly-Tp-dcY"/>
-                                        <constraint firstAttribute="trailing" secondItem="ld7-0Q-Gtx" secondAttribute="trailing" constant="50" id="zdO-FY-EcE"/>
+                                        <constraint firstItem="0iS-2v-dHw" firstAttribute="trailing" secondItem="Dr5-4p-dIs" secondAttribute="trailing" id="vb0-Ge-5tm"/>
+                                        <constraint firstItem="ld7-0Q-Gtx" firstAttribute="trailing" secondItem="Dr5-4p-dIs" secondAttribute="trailing" constant="-50" id="zdO-FY-EcE"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.2666666667" green="0.039215686270000001" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="0iS-2v-dHw" secondAttribute="trailing" id="CwL-NG-PMG"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="photoImageView" destination="R8Z-hF-bda" id="OmM-KM-thf"/>
                                     <outlet property="photoTextView" destination="ld7-0Q-Gtx" id="Gsy-lk-Cs9"/>
@@ -127,7 +141,7 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="6rj-L1-3rP"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="gsb-vZ-xZ5"/>
+                    <navigationItem key="navigationItem" title="Some Incredible Photos:" id="gsb-vZ-xZ5"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="I3V-0l-jvI" id="xBg-gJ-7Ap"/>
@@ -139,7 +153,7 @@
             </objects>
             <point key="canvasLocation" x="1925" y="125"/>
         </scene>
-        <!--Favorites Collection View Controller-->
+        <!--Your Pic Collection-->
         <scene sceneID="QhB-50-Ids">
             <objects>
                 <collectionViewController id="Dlf-FM-L3N" customClass="FavoritesCollectionViewController" customModule="NasaProjectApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -187,7 +201,7 @@
                         </connections>
                     </collectionView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="i69-Ye-RyR">
+                    <navigationItem key="navigationItem" title="Your Pic Collection" id="i69-Ye-RyR">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="calendar" catalog="system" id="kG7-eh-vzx">
                             <connections>
                                 <action selector="backToCalendar:" destination="Dlf-FM-L3N" id="HB1-Gq-J30"/>
@@ -280,10 +294,12 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kwl-RX-PiY">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bZr-0h-BDt">
-                                <rect key="frame" x="20" y="88" width="374" height="147"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bZr-0h-BDt">
+                                <rect key="frame" x="10" y="108" width="394" height="150"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="eI7-M6-Tm2"/>
+                                </constraints>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
@@ -303,8 +319,8 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </textView>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="bvf-cw-3I0">
-                                <rect key="frame" x="197" y="440" width="20" height="20"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="bvf-cw-3I0">
+                                <rect key="frame" x="188.5" y="432" width="37" height="37"/>
                                 <color key="color" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
                         </subviews>
@@ -315,7 +331,11 @@
                             <constraint firstItem="Kwl-RX-PiY" firstAttribute="leading" secondItem="yo3-Dr-VOx" secondAttribute="leading" id="CtD-zm-BPS"/>
                             <constraint firstItem="yo3-Dr-VOx" firstAttribute="bottom" secondItem="Kwl-RX-PiY" secondAttribute="bottom" id="Dis-s8-b24"/>
                             <constraint firstItem="Kwl-RX-PiY" firstAttribute="top" secondItem="yo3-Dr-VOx" secondAttribute="top" id="FM3-R6-evP"/>
+                            <constraint firstItem="bZr-0h-BDt" firstAttribute="leading" secondItem="yo3-Dr-VOx" secondAttribute="leading" constant="10" id="FyR-8X-tY7"/>
+                            <constraint firstItem="bZr-0h-BDt" firstAttribute="trailing" secondItem="yo3-Dr-VOx" secondAttribute="trailing" constant="-10" id="NN9-He-QmA"/>
                             <constraint firstItem="yo3-Dr-VOx" firstAttribute="trailing" secondItem="Kwl-RX-PiY" secondAttribute="trailing" id="UyM-eK-TLf"/>
+                            <constraint firstItem="bZr-0h-BDt" firstAttribute="centerX" secondItem="yo3-Dr-VOx" secondAttribute="centerX" id="Y37-Ku-Yms"/>
+                            <constraint firstItem="bZr-0h-BDt" firstAttribute="top" secondItem="yo3-Dr-VOx" secondAttribute="top" constant="20" id="avj-sI-QZj"/>
                             <constraint firstItem="bvf-cw-3I0" firstAttribute="centerY" secondItem="Kwl-RX-PiY" secondAttribute="centerY" id="lXB-Hz-xUI"/>
                         </constraints>
                     </view>
@@ -355,7 +375,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DMK-48-TbZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2853.6231884057975" y="93.75"/>
+            <point key="canvasLocation" x="2942" y="25"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZLi-Dx-ytY">
@@ -402,7 +422,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="NQV-Lo-KmN"/>
+        <segue reference="5Us-Yr-LuM"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="128" height="106"/>

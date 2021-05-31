@@ -7,6 +7,7 @@
 
 import UIKit
 import QuickLookThumbnailing
+import SafariServices
 
 class PhotoTableViewCell: UITableViewCell {
     
@@ -26,12 +27,13 @@ class DownloadPhotosTableViewController: UITableViewController {
     var dataController:DataController!
     
     var photoInfo: [NASAPhoto] = []
-    var thumbnailArray = [QLThumbnailRepresentation]()
+
     var photoInfoArray = [[String]]()
-    var tempPhoto = [Int:UIImage]()
+   // var tempPhoto = [Int:UIImage]()
     var myCalendar = Calendar(identifier: .gregorian)
     // setup cache as in: https://www.hackingwithswift.com/example-code/system/how-to-cache-data-using-nscache
     var cache = NSCache<NSString, UIImage>()
+    
     var passedInteger: Int = 0
     // keep count of photos loaded to manage enabling of download button:
     var countPhotos: Int = 0
@@ -41,48 +43,20 @@ class DownloadPhotosTableViewController: UITableViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     
-    // https://developer.apple.com/documentation/quicklookthumbnailing/creating_quick_look_thumbnails_to_preview_files_in_your_app
-    func generateThumbnailRepresentations(url: URL) -> UIImage {
-        var thisThumbnail = QLThumbnailRepresentation()
-        // Set up the parameters of the request.
-        
-        let size: CGSize = CGSize(width: 60, height: 90)
-        let scale = UIScreen.main.scale
-        
-        // Create the thumbnail request.
-        let request = QLThumbnailGenerator.Request(fileAt: url,
-                                                   size: size,
-                                                   scale: scale,
-                                                   representationTypes: .thumbnail)
-        
-        // Retrieve the singleton instance of the thumbnail generator and generate the thumbnails.
-        let generator = QLThumbnailGenerator.shared
-        generator.generateRepresentations(for: request) { (thumbnail, type, error) in
-        //    DispatchQueue.main.async {
-                if thumbnail == nil || error != nil {
-                    print("Unable to create thumbnail")
-                    print(error)
-                } else {
-                    if let thumbnail = thumbnail {
-                    thisThumbnail = thumbnail
-                   /* if let thumbnail = thumbnail {
-                        self.thumbnailArray.append(thumbnail) */
-                    
-                    }
-                }
-          //  }
-        
-        }
-        return thisThumbnail.uiImage
-    }
-    
-    
     
     @IBAction func loadMoreImagesPressed(_ sender: Any) {
         loadMoreImagesButton.isEnabled = false
         // activity indicator should start up again once a reload is in progress:
         activityIndicatorIsVisible(true)
         generateNewStartEndDates()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let startDate = dateFormatter.date(from: dateToStart)
+        guard startDate! <  myCalendar.date(byAdding: .day, value: -8, to: Date())! else {
+            showPhotoFailure(message: "You are near the current date and therefore have reached the end of available dates!  Choose an earlier start date to resume your photo explorations!")
+            activityIndicatorIsVisible(false)
+            return
+        }
         NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error, nasaPhotos) in
             if success {
                 print("Had success in reload!")
@@ -122,8 +96,11 @@ class DownloadPhotosTableViewController: UITableViewController {
                 // about to reload, make activity indicator disappear:
                 self.activityIndicatorIsVisible(false)
                 self.tableView.reloadData()
-                    }
-                }
+            } else  {
+                self.showPhotoFailure(message: "Your internet connection is off-line OR the hosting www.nasa.gov website is down.  Please try again later!")
+            }
+            
+        }
             }
         
     // https://cocoacasts.com/swift-fundamentals-how-to-convert-a-string-to-a-date-in-swift
@@ -244,11 +221,27 @@ class DownloadPhotosTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         triggerSegway(indexPath.item) { (success) in
             if success {
+                if !(self.photoInfoArray[self.passedInteger][3].prefix(23) == "https://www.youtube.com" || self.photoInfoArray[self.passedInteger][3].prefix(24) == "https://player.vimeo.com")
+                {
                 self.performSegue(withIdentifier: "fromTableToStage", sender: self)
+                }  else {
+                    self.openWebpageWithSafari(urlString:self.photoInfoArray[self.passedInteger][3])
+                }
+        }
     }
+    }
+    
+    func openWebpageWithSafari(urlString: String) {
+        if let url = URL(string: urlString) {
+        DispatchQueue.main.async {
+        // https://www.hackingwithswift.com/read/32/3/how-to-use-sfsafariviewcontroller-to-browse-a-web-page
+            let config = SFSafariViewController.Configuration()
+            config.entersReaderIfAvailable = true
+            let vc = SFSafariViewController(url: url, configuration:config)
+            self.present(vc, animated: true)
+            }
         }
     }
     
@@ -260,10 +253,20 @@ class DownloadPhotosTableViewController: UITableViewController {
     
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if !(self.photoInfoArray[passedInteger][3].prefix(23) == "https://www.youtube.com" || self.photoInfoArray[passedInteger][3].prefix(24) == "https://player.vimeo.com")
+        {
         let controller = segue.destination as! PhotoStagingViewController
-        
         controller.dataController = dataController
         controller.photoArray = self.photoInfoArray[passedInteger]
+    }
+    }
+    
+    func showPhotoFailure(message: String) {
+        DispatchQueue.main.async {
+        let alertVC = UIAlertController(title: "DOWNLOAD ALERT!", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alertVC, animated: true, completion: nil)
+    }
     }
         }
 

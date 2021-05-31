@@ -39,7 +39,7 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupFetchedResultsController()
+       // setupFetchedResultsController()
         mathForCalculatingCollectionViewCell()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -53,6 +53,7 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+     //   dataController = favoritesPhotosViewController.dataController
         setupFetchedResultsController()
         self.loadView()
     }
@@ -83,6 +84,11 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         } catch {
             fatalError("Unable to fetch: \(error.localizedDescription)")
     }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        collectionViewLayout.invalidateLayout()
     }
 
     /*

@@ -11,7 +11,7 @@ class SettingsViewController: UIViewController {
     
     
     var dateToStart: String = "2000-01-01"
-    var dateToEnd: String = "2000-01-07"
+    var dateToEnd: String = "2000-01-08"
     
     var dataController:DataController!
     var myCalendar = Calendar(identifier: .gregorian)
@@ -30,6 +30,15 @@ class SettingsViewController: UIViewController {
     
     @IBAction func favoriteHeartButtonPressed(_ sender: Any) {
         self.performSegue(withIdentifier: "fromSettingsToFavorites", sender: self)
+    }
+    
+    //  I used code from the following website to allow/disallow this view controller rotations:
+    // Some landscape views were cutting off the "I'm Ready" button on smaller phones https://stackoverflow.com/questions/36358032/override-app-orientation-setting/48120684#48120684
+    
+    func setAutoRotation(value: Bool) {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+       appDelegate.autoRotation = value
+    }
     }
     
     // https://stackoverflow.com/questions/35700281/date-format-in-swift
@@ -51,7 +60,7 @@ class SettingsViewController: UIViewController {
         datePicker.datePickerMode = UIDatePicker.Mode.date
         // The first date for photos is June 16, 1995:
         datePicker.minimumDate = Date(timeIntervalSinceReferenceDate: -175000000)
-        datePicker.maximumDate = Date()
+        datePicker.maximumDate =  myCalendar.date(byAdding: .day, value: -8, to: Date())
         // https://stackoverflow.com/questions/3785610/uidatepicker-upon-date-changed
         datePicker.addTarget(self, action: #selector(datePickerChanged(datePicker:)), for: .valueChanged)
         getStartDateFromPlist()
@@ -60,7 +69,17 @@ class SettingsViewController: UIViewController {
     func getStartDateFromPlist() {
         if let thisStartingDate = UserDefaults.standard.value(forKey: "startDate") {
             datePicker.date = thisStartingDate as! Date
+            // recalled date from prior session needs to be translated to "dateToStart" and "dateToEnd"
+            datePickerChanged(datePicker: datePicker)
+        } else {
+            // January 1, 2000:
+            datePicker.date = Date(timeIntervalSinceReferenceDate: 86400)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setAutoRotation(value: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,6 +88,7 @@ class SettingsViewController: UIViewController {
         if let dateForCalendar = dateForCalendar {
         let a = dateForCalendar as Date
         UserDefaults.standard.setValue(a, forKey: "startDate")
+        setAutoRotation(value: true)
     }
     }
     
@@ -82,6 +102,8 @@ class SettingsViewController: UIViewController {
         dateToEnd = dateFormatter(date: dateFinal, dateFormat: "yyyy-MM-dd")
     }
     }
+    
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
