@@ -18,17 +18,6 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
     
     var selectedDateLabel: String?
     
-   // var photoCoreData: Photo!
-    
-   /*
-    @IBAction func goBackToCalendar(_ sender: Any) {
-        
-        let controller: SettingsViewController
-        controller = storyboard?.instantiateViewController(identifier: "SettingsViewController") as! SettingsViewController
-        controller.dataController = dataController
-        present(controller, animated: true, completion: nil)
-    }
-    */
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -41,41 +30,23 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         super.viewDidLoad()
        // setupFetchedResultsController()
         mathForCalculatingCollectionViewCell()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-     //   dataController = favoritesPhotosViewController.dataController
         setupFetchedResultsController()
         self.loadView()
     }
-    /*
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setupFetchedResultsController()
-        self.loadView()
-        print("View Did Appear")
-    }
- */
     
     func setupFetchedResultsController() {
-        print("111")
         let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
-        print("222")
+        
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
-        print("333")
+        
         fetchRequest.sortDescriptors = [sortDescriptor]
-        print("444")
+        
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        print("555")
+        
         fetchedResultsController?.delegate = self
         do {
             try fetchedResultsController?.performFetch()
@@ -85,21 +56,6 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
             fatalError("Unable to fetch: \(error.localizedDescription)")
     }
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        collectionViewLayout.invalidateLayout()
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
@@ -110,7 +66,7 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
+        
         return fetchedResultsController?.sections?[section].numberOfObjects ?? 0
     }
 
@@ -173,8 +129,6 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
             controller.dataController = dataController
         }
         
-    //    controller.photoCoreData = photoCoreData
-     //   print(photoCoreData)
     }
 
     // MARK: UICollectionViewDelegate

@@ -33,7 +33,7 @@ class SettingsViewController: UIViewController {
     }
     
     //  I used code from the following website to allow/disallow this view controller rotations:
-    // Some landscape views were cutting off the "I'm Ready" button on smaller phones https://stackoverflow.com/questions/36358032/override-app-orientation-setting/48120684#48120684
+    // Some landscape views were cutting off the "I'm Ready" button https://stackoverflow.com/questions/36358032/override-app-orientation-setting/48120684#48120684
     
     func setAutoRotation(value: Bool) {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
@@ -84,11 +84,11 @@ class SettingsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        setAutoRotation(value: true)
         // let's store the starting date in plist file!
         if let dateForCalendar = dateForCalendar {
         let a = dateForCalendar as Date
         UserDefaults.standard.setValue(a, forKey: "startDate")
-        setAutoRotation(value: true)
     }
     }
     

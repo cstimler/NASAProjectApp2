@@ -102,14 +102,15 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="arrowshape.turn.up.right.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0iS-2v-dHw">
-                                            <rect key="frame" x="363" y="0.0" width="51" height="80"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrowshape.turn.up.right.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0iS-2v-dHw">
+                                            <rect key="frame" x="364" y="0.0" width="50" height="17.5"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="R8Z-hF-bda" firstAttribute="leading" secondItem="Dr5-4p-dIs" secondAttribute="leading" id="2hd-jX-yj3"/>
                                         <constraint firstItem="ld7-0Q-Gtx" firstAttribute="leading" secondItem="R8Z-hF-bda" secondAttribute="trailing" id="CpI-et-Oyt"/>
                                         <constraint firstItem="R8Z-hF-bda" firstAttribute="top" secondItem="Dr5-4p-dIs" secondAttribute="top" id="OIo-CT-oEy"/>
+                                        <constraint firstItem="0iS-2v-dHw" firstAttribute="leading" secondItem="ld7-0Q-Gtx" secondAttribute="trailing" id="RTq-BN-pzE"/>
                                         <constraint firstAttribute="bottom" secondItem="ld7-0Q-Gtx" secondAttribute="bottom" id="jch-Nk-cZv"/>
                                         <constraint firstItem="ld7-0Q-Gtx" firstAttribute="top" secondItem="Dr5-4p-dIs" secondAttribute="top" id="m81-EG-tuX"/>
                                         <constraint firstAttribute="bottom" secondItem="R8Z-hF-bda" secondAttribute="bottom" id="oly-Tp-dcY"/>
@@ -119,7 +120,8 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.2666666667" green="0.039215686270000001" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="0iS-2v-dHw" secondAttribute="trailing" id="CwL-NG-PMG"/>
+                                    <constraint firstItem="0iS-2v-dHw" firstAttribute="trailing" secondItem="iSU-nC-xBQ" secondAttribute="trailing" id="CwL-NG-PMG"/>
+                                    <constraint firstItem="0iS-2v-dHw" firstAttribute="top" secondItem="iSU-nC-xBQ" secondAttribute="top" constant="-1" id="hzJ-fa-air"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="photoImageView" destination="R8Z-hF-bda" id="OmM-KM-thf"/>

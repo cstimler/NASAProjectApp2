@@ -73,12 +73,11 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
     override func viewWillDisappear(_ animated: Bool) {
         try? dataController.viewContext.save()
         if isMovingFromParent {
-            print("Inside parenthesis")
+            print("Within first parenthesis")
                     if let viewControllers = self.navigationController?.viewControllers {
                         if (viewControllers.count >= 1) {
-                            print("Inside second parenthesis")
+                            print("Within second parenthesis")
                             let previousViewController = viewControllers[viewControllers.count-1] as! FavoritesCollectionViewController
-                            // whatever you want to do
                             previousViewController.dataController = dataController
                         }
                     }
@@ -88,11 +87,9 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
     
        
     @objc func wasTapped(_ sender:UIGestureRecognizer) {
-        print("Registers Tap")
         if infoText.isHidden == false {
             infoText.isHidden = true
         }
-          //      self.photoImage = UIImage(data: self.photoData)}
     }
         
     
@@ -106,13 +103,8 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         fetchRequest.sortDescriptors = [sortDescriptor]
         do {
             arrayOfPhotos = try dataController.viewContext.fetch(fetchRequest)
-            print("Selected date label:")
-            print(selectedDateLabel)
-            print("In SetupFetchedCtnlr")
-            print(arrayOfPhotos)
         } catch {
             print(error)
-         //
         }
     }
     
@@ -121,10 +113,8 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         var dateNice: String?
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-
         let dateFormatterDisplay = DateFormatter()
         dateFormatterDisplay.dateFormat = "MMM d, yyyy"
-
         if let date: Date = (dateFormatter.date(from: dateString)) {
             dateNice = dateFormatterDisplay.string(from: (date as NSDate) as Date)
         }

@@ -119,7 +119,7 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
         .foregroundColor: UIColor.white,
         .font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 30), .strokeWidth: -5]
     
-   //Allows return to retract keyboard: https://stackoverflow.com/questions/50462356/xcode-9-textviewshouldreturn
+   //Allows "return" to retract keyboard: https://stackoverflow.com/questions/50462356/xcode-9-textviewshouldreturn
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if(text == "\n") {
                 textView.resignFirstResponder()
@@ -132,7 +132,6 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(photoArray)
         // start activity indicator as photo is loading:
         activityIndicatorIsVisible(true)
         infoTextView.isHidden = true
@@ -171,13 +170,11 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     
     // toggle through a variety of possible views so user can select their preference:
     @objc func wasTapped(_ sender:UIGestureRecognizer) {
-        print("Registers Tap")
         if infoTextView.isHidden == false {
             infoTextView.isHidden = true
             return
         }
         if photoStage.contentMode == .scaleToFill {
-            print("Switches content mode")
             photoStage.contentMode = .scaleAspectFit
         } else {
         if photoStage.contentMode == .scaleAspectFit {
@@ -186,7 +183,6 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
         if photoStage.contentMode == .scaleAspectFill {
         photoStage.contentMode = .scaleToFill
         }
-          //      self.photoImage = UIImage(data: self.photoData)}
     }
         }
     }
@@ -221,16 +217,5 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
             self.present(alertVC, animated: true, completion: nil)
     }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

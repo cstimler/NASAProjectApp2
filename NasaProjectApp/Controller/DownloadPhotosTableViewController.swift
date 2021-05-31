@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import QuickLookThumbnailing
 import SafariServices
 
 class PhotoTableViewCell: UITableViewCell {
@@ -59,7 +58,6 @@ class DownloadPhotosTableViewController: UITableViewController {
         }
         NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error, nasaPhotos) in
             if success {
-                print("Had success in reload!")
                 self.photoInfo = nasaPhotos
                 self.parsePhotoInfo()
                 // about to reload populated tableview:
@@ -76,8 +74,6 @@ class DownloadPhotosTableViewController: UITableViewController {
             photoInfoArrayTemp.append(photoFields)
                 }
         photoInfoArray = photoInfoArray + photoInfoArrayTemp
-        print("Finished parsing photos")
-        print(photoInfoArray.count)
             }
 
     override func viewDidLoad() {
@@ -86,17 +82,15 @@ class DownloadPhotosTableViewController: UITableViewController {
         activityIndicatorIsVisible(true)
         // disable load button upon loading:
         loadMoreImagesButton.isEnabled = false
-        print("Date to start is:" + dateToStart)
-        print("Date to eend is:" + dateToEnd)
         NPClient.requestPhotosList(startDate: dateToStart, endDate: dateToEnd) { (success, error, nasaPhotos) in
             if success {
-                print("Had success in vc!")
                 self.photoInfo = nasaPhotos
                 self.parsePhotoInfo()
                 // about to reload, make activity indicator disappear:
                 self.activityIndicatorIsVisible(false)
                 self.tableView.reloadData()
             } else  {
+                // in case of failure to download photos list:
                 self.showPhotoFailure(message: "Your internet connection is off-line OR the hosting www.nasa.gov website is down.  Please try again later!")
             }
             
@@ -104,7 +98,7 @@ class DownloadPhotosTableViewController: UITableViewController {
             }
         
     // https://cocoacasts.com/swift-fundamentals-how-to-convert-a-string-to-a-date-in-swift
-    
+    // this is activated when user wishes to reload photos:
     func generateNewStartEndDates() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -122,11 +116,11 @@ class DownloadPhotosTableViewController: UITableViewController {
         return dateFormatter.string(from: date)
     }
     
+    // format dates nicely for presentation in the tableview:
     func createDateForLabel(dateString: String) -> String {
         var dateNice: String?
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-
         let dateFormatterDisplay = DateFormatter()
         dateFormatterDisplay.dateFormat = "MMM d, yyyy"
 
@@ -141,6 +135,7 @@ class DownloadPhotosTableViewController: UITableViewController {
         }
     }
     
+    // helps to determine when the "Load More Images" button should be re-enabled:
     func keepCountOfPhotoDownloads() {
         countPhotos = countPhotos + 1
         if countPhotos == 8 {
@@ -149,6 +144,7 @@ class DownloadPhotosTableViewController: UITableViewController {
         }
     }
     
+    // manages the activity indicator properly:
     func activityIndicatorIsVisible(_ isVisible: Bool) {
         if isVisible {
             activityIndicator.startAnimating()
@@ -157,11 +153,6 @@ class DownloadPhotosTableViewController: UITableViewController {
         }
     }
     
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     
 
     // MARK: - Table view data source
@@ -192,7 +183,6 @@ class DownloadPhotosTableViewController: UITableViewController {
                 cell.photoTextView.text = createDateForLabel(dateString: photoInfoArray[indexPath.item][0]) + ":   " + photoInfoArray[indexPath.item][2]
                     if let cachedVersion = self.cache.object(forKey: self.photoInfoArray[indexPath.item][0] as NSString) {
                         cell.photoImageView.image = cachedVersion
-                        print("was in first area")
                     } else {
                         NPClient.downloadPhotos(urlString: self.photoInfoArray[indexPath.item][3]) { (success, error, data) in
                             if success {
@@ -203,7 +193,6 @@ class DownloadPhotosTableViewController: UITableViewController {
                             if let resizedImage = resizedImage {
                             self.cache.setObject(resizedImage, forKey: self.photoInfoArray[indexPath.item][0] as NSString)
                                 cell.photoImageView.image = resizedImage
-                                print("was in second area")
                             }
                     }
                     }
@@ -220,6 +209,8 @@ class DownloadPhotosTableViewController: UITableViewController {
         return cell
     }
     
+    
+    // determine correct segue destination and pass necessary data:
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         triggerSegway(indexPath.item) { (success) in
             if success {
@@ -232,7 +223,7 @@ class DownloadPhotosTableViewController: UITableViewController {
         }
     }
     }
-    
+    // we sometimes need to open Vimeo or YouTube videos:
     func openWebpageWithSafari(urlString: String) {
         if let url = URL(string: urlString) {
         DispatchQueue.main.async {
@@ -251,7 +242,7 @@ class DownloadPhotosTableViewController: UITableViewController {
         completion(true)
     }
     
-
+// this view controller will segue to either the PhotoStagingViewController or a Safari browser:
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if !(self.photoInfoArray[passedInteger][3].prefix(23) == "https://www.youtube.com" || self.photoInfoArray[passedInteger][3].prefix(24) == "https://player.vimeo.com")
         {
@@ -261,6 +252,7 @@ class DownloadPhotosTableViewController: UITableViewController {
     }
     }
     
+    // alert for download failures:
     func showPhotoFailure(message: String) {
         DispatchQueue.main.async {
         let alertVC = UIAlertController(title: "DOWNLOAD ALERT!", message: message, preferredStyle: .alert)
@@ -270,64 +262,8 @@ class DownloadPhotosTableViewController: UITableViewController {
     }
         }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-     
-     // replace placeholder image only if and when a thumbnail is available:
-     /*
-     let place = indexPath.item
-     if place < thumbnailArray.count
-     {
-         cell.imageView?.image = thumbnailArray[place].uiImage
-     }
-      
-       let thisUrl = URL(string: photoInfoArray[indexPath.item][3])
-         if let thisUrl = thisUrl {
-         cell.imageView?.image = generateThumbnailRepresentations(url: thisUrl)
-     } // close check on photoInfoArray */
-     
-    */
+    
+// Ease the burden of caching by providing smaller thumbprints for the tableview images:
 // https://stackoverflow.com/questions/31314412/how-to-resize-image-in-swift
 extension UIImage {
     func imageResized() -> UIImage {
