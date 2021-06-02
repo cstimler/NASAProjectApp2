@@ -66,7 +66,7 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
     @IBAction func addButtonPressed(_ sender: Any) {
         // we will register the current Photo with Core Data:
         if thisIsARepeatPhoto() {
-            showPhotoFailure(message: "You have already saved this photo.  To resave, please delete the old photo and save this new one.")
+            showPhotoFailure(title: "REPEAT PHOTO!", message: "You have already saved this photo.  To resave, please delete the old photo and save this new one.")
         }
         let photo = Photo(context: dataController.viewContext)
         photo.dateLabel = photoArray[0]
@@ -151,12 +151,17 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
                     // photo about to appear, turn off activity indicator:
                     self.activityIndicatorIsVisible(false)
                     self.photoImage = UIImage(data: data)
+                    if let image = UIImage(data: data){
                     self.photoStage.image = self.photoImage
-                    self.photoData = data
+                        self.photoData = data  }
+                    else {
+                        print("NOT A VALID IMAGE FILE!!!!")
+                    }
                 }
             }
             else {
                 print("Photo transfer failed.")
+                self.showPhotoFailure(title: "DOWNLOAD FAILURE!", message: "Unable to download photo.  This can be due to lost internet connectivity or missing photo.  Please try a different photo or try again later or with a different internet connection.")
             }
         }
         // Do any additional setup after loading the view.
@@ -210,9 +215,9 @@ class PhotoStagingViewController: UIViewController, UINavigationControllerDelega
         return picImage
     }
     
-    func showPhotoFailure(message: String) {
+    func showPhotoFailure(title: String, message: String) {
         DispatchQueue.main.async {
-        let alertVC = UIAlertController(title: "REPEAT PHOTOS!", message: message, preferredStyle: .alert)
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(alertVC, animated: true, completion: nil)
     }

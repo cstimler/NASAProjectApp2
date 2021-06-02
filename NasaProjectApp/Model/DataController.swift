@@ -15,7 +15,7 @@ class DataController {
         return persistentContainer.viewContext
     }
     // this helps avoid CoreData Errors:
-    var managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//    var managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
     
     init(modelName:String) {
         persistentContainer = NSPersistentContainer(name: modelName)

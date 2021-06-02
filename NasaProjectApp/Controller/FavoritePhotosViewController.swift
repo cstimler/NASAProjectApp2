@@ -44,6 +44,10 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         areYouSureYouWantToDelete() 
     }
     
+    //  I used code from the following website to allow/disallow this view controller rotations:
+    // Some landscape views were cutting off the "I'm Ready" button https://stackoverflow.com/questions/36358032/override-app-orientation-setting/48120684#48120684
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.isUserInteractionEnabled = true
@@ -131,6 +135,7 @@ class FavoritePhotosViewController: UIViewController, UIImagePickerControllerDel
         let deleteAlert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this photo?", preferredStyle: UIAlertController.Style.alert)
     deleteAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
         self.dataController.viewContext.delete(self.thisPhoto)
+        try? self.dataController.viewContext.save()
     }))
     deleteAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
           return

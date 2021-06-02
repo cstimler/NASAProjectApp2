@@ -7,6 +7,7 @@
 
 // https://api.nasa.gov/planetary/apod/?api_key=MYKEY&start_date=2005-06-16&end_date=2005-07-23
 import Foundation
+import MobileCoreServices
 
 
 class NPClient {
@@ -94,10 +95,16 @@ class NPClient {
                 }
                 return
             }
+            let thisUrl = url
+            // sometimes the url error is not detected unless one checks the mime type:
+            if checkMimeType(thisUrl: thisUrl).prefix(9) == "text/html" {
+                DispatchQueue.main.async {
+                    completion(false, error, nil)
+                }
+            }
                 if error != nil {
                     print(error)
                 } else {
-                    print("is downloadind a new photo!")
                     DispatchQueue.main.async {
                     completion(true, nil, data)
                 }
@@ -105,6 +112,18 @@ class NPClient {
         }
         task.resume()
         print("Leaving Task")
+    }
+    
+// modified from: https://stackoverflow.com/questions/31243371/path-extension-and-mime-type-of-file-in-swift
+    class func checkMimeType(thisUrl: URL) -> String {
+        let pathExtension = thisUrl.pathExtension
+
+        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
+            if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+                return mimetype as String
+            }
+        }
+        return "application/octet-stream"
     }
     
 }

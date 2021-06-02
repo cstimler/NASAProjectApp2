@@ -63,8 +63,11 @@ class DownloadPhotosTableViewController: UITableViewController {
                 // about to reload populated tableview:
                 self.activityIndicatorIsVisible(false)
                 self.tableView.reloadData()
-                    }
-                }
+        } else {
+            // (NEW CHANGE) alert is shown if unable to retrieve photo list upon reload attempt:
+            self.showPhotoFailure(message: "Your internet connection is off-line OR the hosting www.nasa.gov website is down.  Please try again later!")
+        }
+    }
     }
     
     func parsePhotoInfo()  {
@@ -198,6 +201,12 @@ class DownloadPhotosTableViewController: UITableViewController {
                     }
                  else {
                     print(error)
+                    // (NEW CHANGE): alert is now shown if there is a problem downloading a photo to the tableview:
+                    if self.loadMoreImagesButton.isEnabled == false {
+                        self.showPhotoFailure(message: "One or more photos cannot be downloaded.  This can be due to a missing photo or a bad connection.  Try another date and/or try again later.")
+                        // re-enable the button because in the case of a single bad photo the user might want to see the others that were downloaded successfully:
+                        self.loadMoreImagesButton.isEnabled = true
+                    }
                 }
             }
         }

@@ -30,12 +30,14 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         super.viewDidLoad()
        // setupFetchedResultsController()
         mathForCalculatingCollectionViewCell()
+        collectionView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupFetchedResultsController()
         self.loadView()
+
     }
     
     func setupFetchedResultsController() {
@@ -45,7 +47,7 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "fix")
         
         fetchedResultsController?.delegate = self
         do {
@@ -72,7 +74,9 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PicCollectionViewCell
-    
+        // The following "if" seems to patch up a bug in the iOS operating system which was causing occasional crashes upon rotation, see:
+        // https://stackoverflow.com/questions/25049923/terminating-app-due-to-uncaught-exception-nsinternalinconsistencyexception-re
+        if fetchedResultsController?.sections?[0].numberOfObjects ?? 0 > indexPath.item {
         // Configure the cell
         let photoCoreData = fetchedResultsController?.object(at: indexPath)
         let photoData = photoCoreData?.pic
@@ -80,6 +84,8 @@ class FavoritesCollectionViewController: UICollectionViewController, NSFetchedRe
         let thisImage = UIImage(data: photoData)
             cell.imageView.image = thisImage
         }
+       
+    }
         return cell
     }
     
